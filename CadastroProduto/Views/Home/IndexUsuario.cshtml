@@ -1,0 +1,16 @@
+﻿@model CadastroProduto.Models.Domain.Usuario
+@{
+    ViewData["Title"] = "Home";
+}
+
+    <h1>@Html.DisplayName(Model.Nome), Seja bem vindo ao e-Shop</h1>
+
+    
+    <h3>Deseja cadastrar todos os dados referentes ao produto?</h3>
+<p>
+    <a asp-action="CreateU" class="btn btn-success">Cadastrar</a>
+</p>
+
+
+<p><br /><br /><br /><br />
+                     <h4>Se desejar consultar dados, utilize o menu superior</h4></p>

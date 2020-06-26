@@ -1,0 +1,226 @@
+﻿@model CadastroProduto.Models.Domain.Produto
+
+@{
+    ViewData["Title"] = "Create";
+}
+  
+<h1><strong> Cadastro de Produto</strong> </h1> 
+<hr />
+<h4>Digite os dados do <strong>PRODUTO</strong></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataEntrada" class="control-label"></label>
+                <input asp-for="DataEntrada" class="form-control" />
+                <span asp-validation-for="DataEntrada" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Quantidade" class="control-label"></label>
+                <input asp-for="Quantidade" class="form-control" />
+                <span asp-validation-for="Quantidade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                    </label>
+                </div>
+            </div>
+
+            <hr />
+            <h4>Digite os dados do <strong>CLIENTE</strong></h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Cpf" class="control-label"></label>
+                <input asp-for="Cliente.Cpf" class="form-control" />
+                <span asp-validation-for="Cliente.Cpf" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco.Logradouro" class="control-label"></label>
+                <input asp-for="Cliente.Endereco.Logradouro" class="form-control" />
+                <span asp-validation-for="Cliente.Endereco.Logradouro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco.Numero" class="control-label"></label>
+                <input asp-for="Cliente.Endereco.Numero" class="form-control" />
+                <span asp-validation-for="Cliente.Endereco.Numero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco.Complemento" class="control-label"></label>
+                <input asp-for="Cliente.Endereco.Complemento" class="form-control" />
+                <span asp-validation-for="Cliente.Endereco.Complemento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco.Bairro" class="control-label"></label>
+                <input asp-for="Cliente.Endereco.Bairro" class="form-control" />
+                <span asp-validation-for="Cliente.Endereco.Bairro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco.Cep" class="control-label"></label>
+                <input asp-for="Cliente.Endereco.Cep" class="form-control" />
+                <span asp-validation-for="Cliente.Endereco.Cep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco.Cidade.Descricao" class="control-label"></label>
+                <input asp-for="Cliente.Endereco.Cidade.Descricao" class="form-control" />
+                <span asp-validation-for="Cliente.Endereco.Cidade.Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Cliente.Endereco.Cidade.Estado.Descricao" class="control-label"></label>
+                <input asp-for="Cliente.Endereco.Cidade.Estado.Descricao" class="form-control" />
+                <span asp-validation-for="Cliente.Endereco.Cidade.Estado.Descricao" class="text-danger"></span>
+            </div>
+
+
+            <hr />
+            <h4>Digite os dados da <strong>FICHA TÉCNICA</strong></h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Codigo" class="control-label"></label>
+                <input asp-for="FichaTecnica.Codigo" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Nome" class="control-label"></label>
+                <input asp-for="FichaTecnica.Nome" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Descricao" class="control-label"></label>
+                <input asp-for="FichaTecnica.Descricao" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.DataRegistro" class="control-label"></label>
+                <input asp-for="FichaTecnica.DataRegistro" class="form-control" />
+                <span asp-validation-for="FichaTecnica.DataRegistro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Observacoes" class="control-label"></label>
+                <input asp-for="FichaTecnica.Observacoes" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Observacoes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Categoria.Descricao" class="control-label"></label>
+                <input asp-for="FichaTecnica.Categoria.Descricao" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Categoria.Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Categoria.SubCategoria.Descricao" class="control-label"></label>
+                <input asp-for="FichaTecnica.Categoria.SubCategoria.Descricao" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Categoria.SubCategoria.Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Componente.Basico" class="control-label"></label>
+                <input asp-for="FichaTecnica.Componente.Basico" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Componente.Basico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Componente.Primario" class="control-label"></label>
+                <input asp-for="FichaTecnica.Componente.Primario" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Componente.Primario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FichaTecnica.Componente.Secundario" class="control-label"></label>
+                <input asp-for="FichaTecnica.Componente.Secundario" class="form-control" />
+                <span asp-validation-for="FichaTecnica.Componente.Secundario" class="text-danger"></span>
+            </div>
+
+
+            <hr />
+            <h4>Digite os dados da <strong>LINHA</strong></h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Linha.Codigo" class="control-label"></label>
+                <input asp-for="Linha.Codigo" class="form-control" />
+                <span asp-validation-for="Linha.Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Linha.Nome" class="control-label"></label>
+                <input asp-for="Linha.Nome" class="form-control" />
+                <span asp-validation-for="Linha.Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Linha.FichaTecnicaLinha.Descricao" class="control-label"></label>
+                <input asp-for="Linha.FichaTecnicaLinha.Descricao" class="form-control" />
+                <span asp-validation-for="Linha.FichaTecnicaLinha.Descricao" class="text-danger"></span>
+            </div>
+
+
+            <hr />
+            <h4>Digite os dados do <strong>ACESSÓRIO</strong></h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Linha.Acessorio.Nome" class="control-label"></label>
+                <input asp-for="Linha.Acessorio.Nome" class="form-control" />
+                <span asp-validation-for="Linha.Acessorio.Nome" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Linha.Acessorio.Codigo" class="control-label"></label>
+                <input asp-for="Linha.Acessorio.Codigo" class="form-control" />
+                <span asp-validation-for="Linha.Acessorio.Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Linha.Acessorio.Descricao" class="control-label"></label>
+                <input asp-for="Linha.Acessorio.Descricao" class="form-control" />
+                <span asp-validation-for="Linha.Acessorio.Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Linha.Acessorio.Quantidade" class="control-label"></label>
+                <input asp-for="Linha.Acessorio.Quantidade" class="form-control" />
+                <span asp-validation-for="Linha.Acessorio.Quantidade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Linha.Acessorio.Valor" class="control-label"></label>
+                <input asp-for="Linha.Acessorio.Valor" class="form-control" />
+                <span asp-validation-for="Linha.Acessorio.Valor" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Linha.Acessorio.Basico" /> @Html.DisplayNameFor(model => model.Linha.Acessorio.Basico)
+                    </label>
+                </div>
+            </div>
+            <hr />
+
+
+            <div class="form-group">
+                <input type="submit" value="Salvar e Continuar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar</a>
+</div>
+

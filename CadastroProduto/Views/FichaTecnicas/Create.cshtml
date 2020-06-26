@@ -1,0 +1,79 @@
+﻿@model CadastroProduto.Models.Domain.FichaTecnica
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+    <h2>Cadastrar Nova Ficha Técnica</h2>
+
+<h4>Digite os dados</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataRegistro" class="control-label"></label>
+                <input asp-for="DataRegistro" class="form-control" />
+                <span asp-validation-for="DataRegistro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Observacoes" class="control-label"></label>
+                <input asp-for="Observacoes" class="form-control" />
+                <span asp-validation-for="Observacoes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Categoria.Descricao" class="control-label"></label>
+                <input asp-for="Categoria.Descricao" class="form-control" />
+                <span asp-validation-for="Categoria.Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Categoria.SubCategoria.Descricao" class="control-label"></label>
+                <input asp-for="Categoria.SubCategoria.Descricao" class="form-control" />
+                <span asp-validation-for="Categoria.SubCategoria.Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Componente.Basico" class="control-label"></label>
+                <input asp-for="Componente.Basico" class="form-control" />
+                <span asp-validation-for="Componente.Basico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Componente.Primario" class="control-label"></label>
+                <input asp-for="Componente.Primario" class="form-control" />
+                <span asp-validation-for="Componente.Primario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Componente.Secundario" class="control-label"></label>
+                <input asp-for="Componente.Secundario" class="form-control" />
+                <span asp-validation-for="Componente.Secundario" class="text-danger"></span>
+            </div>          
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
