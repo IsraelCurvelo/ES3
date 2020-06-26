@@ -30,7 +30,7 @@ namespace CadastroProduto.Controllers
             {
                 resultado.Add((FichaTecnica)x);
             }
-            return View();
+            return View(resultado);
         }
 
         public IActionResult Create()
