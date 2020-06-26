@@ -34,7 +34,8 @@ namespace CadastroProduto.Facade
 
         public void Excluir(EntidadeDominio entidadeDominio)
         {
-
+            ProdutoDAL dal = new ProdutoDAL(dbContext);
+            dal.Excluir(entidadeDominio);
         }
 
         public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
@@ -43,6 +44,12 @@ namespace CadastroProduto.Facade
             List<EntidadeDominio> list = new List<EntidadeDominio>();
             list = pd.Consultar(entidadeDominio);
             return list;
+        }
+
+        public Produto ConsultarId(int id)
+        {
+            ProdutoDAL dal = new ProdutoDAL(dbContext);
+            return dal.ConsultarId(id);
         }
     }
 }

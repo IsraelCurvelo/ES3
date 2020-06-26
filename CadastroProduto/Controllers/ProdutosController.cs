@@ -31,35 +31,13 @@ namespace CadastroProduto.Controllers
             {
                 resultado.Add((Produto)x);
             }
-            return View(resultado);
-            
-           // return View();
+            return View(resultado);           
+         
         }
 
         public IActionResult Create()
         {
-            /*
-            EntidadeDominio fichaTecnica = new FichaTecnica();
-            FichaTecnicaFacade lf = new FichaTecnicaFacade(dbContext);
-
-            List<FichaTecnica> resultadoFichaTecnica = new List<FichaTecnica>();
-            foreach (EntidadeDominio x in lf.Consultar(fichaTecnica))
-            {
-                resultadoFichaTecnica.Add((FichaTecnica)x);
-            }
-            EntidadeDominio cliente = new Cliente();
-            ClienteFacade cf = new ClienteFacade(dbContext);
-
-            List<Cliente> resultadoCliente = new List<Cliente>();
-            foreach (EntidadeDominio x in cf.Consultar(cliente))
-            {
-                resultadoCliente.Add((Cliente)x);
-            }
-
-
-            var viewModel = new ProdutoViewModel { FichaTecnica = resultadoFichaTecnica, Cliente = resultadoCliente };
-            return View(viewModel);
-            */
+           
             return View();
         }
 
@@ -73,6 +51,31 @@ namespace CadastroProduto.Controllers
             
 
             return RedirectToAction("Create","Acessorios",produto.Linha);
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            ProdutoFacade facade = new ProdutoFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if(obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete (int id)
+        {
+            ProdutoFacade facade = new ProdutoFacade(dbContext);
+            var obj = facade.ConsultarId(id);
+            facade.Excluir(obj);
+            return RedirectToAction("Index");
         }
     }
 }

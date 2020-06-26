@@ -29,7 +29,8 @@ namespace CadastroProduto.Dal
 
         public void Excluir(EntidadeDominio entidadeDominio)
         {
-
+            dbContext.Remove(entidadeDominio);
+            dbContext.SaveChanges();
         }
 
         public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
@@ -42,6 +43,11 @@ namespace CadastroProduto.Dal
             }
 
             return resultado;
+        }
+
+        public Produto ConsultarId(int id)
+        {
+            return dbContext.Produto.FirstOrDefault(x => x.Id == id);
         }
     }
 }
