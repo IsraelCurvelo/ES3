@@ -50,9 +50,33 @@ namespace CadastroProduto.Controllers
             ClienteFacade cf = new ClienteFacade(dbContext);
             cf.Cadastrar(cliente);
 
-            return RedirectToAction(nameof(Index));
-            //return RedirectToAction("Create", "Produtos");
+            return RedirectToAction(nameof(Index));           
 
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ClienteFacade facade = new ClienteFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            ClienteFacade facade = new ClienteFacade(dbContext);
+            var obj = facade.ConsultarId(id);
+            facade.Excluir(obj);
+            return RedirectToAction("Index");
         }
     }
 }

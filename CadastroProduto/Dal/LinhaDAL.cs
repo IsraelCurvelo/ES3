@@ -48,7 +48,8 @@ namespace CadastroProduto.Dal
 
         public Linha ConsultarPorId(int id)
         {
-            return dbContext.Linha.Where(x => x.Id == id).FirstOrDefault();
+            return dbContext.Linha.FirstOrDefault(x => x.Id == id);
         }
+
     }
 }

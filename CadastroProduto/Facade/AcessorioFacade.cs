@@ -46,5 +46,11 @@ namespace CadastroProduto.Facade
             list = cd.Consultar(entidadeDominio);
             return list;
         }
+
+        public Acessorio ConsultarId(int id)
+        {
+            AcessorioDAL dal = new AcessorioDAL(dbContext);
+            return dal.ConsultarId(id);
+        }
     }
 }

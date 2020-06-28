@@ -48,9 +48,9 @@ namespace CadastroProduto.Dal
             return resultado;
         }
 
-        public List<Cliente> ExibirTodos(Cliente cliente)
-        {                       
-            return dbContext.Cliente.ToList();
+        public Cliente ConsultarId(int id)
+        {
+            return dbContext.Cliente.FirstOrDefault(x => x.Id == id);
         }
     }
 }

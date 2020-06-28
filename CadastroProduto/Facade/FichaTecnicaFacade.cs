@@ -46,5 +46,12 @@ namespace CadastroProduto.Facade
             list = ftd.Consultar(entidadeDominio);
             return list;
         }
+
+        public FichaTecnica ConsultarId(int id)
+        {
+            FichaTecnicaDAL dal = new FichaTecnicaDAL(dbContext);
+            var obj = dal.ConsultarId(id);
+            return obj;
+        }
     }
 }

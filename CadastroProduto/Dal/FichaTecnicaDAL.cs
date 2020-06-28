@@ -43,5 +43,10 @@ namespace CadastroProduto.Dal
 
             return resultado;
         }
+
+        public FichaTecnica ConsultarId(int id)
+        {
+            return dbContext.FichaTecnica.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

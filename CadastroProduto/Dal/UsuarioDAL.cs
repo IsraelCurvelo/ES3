@@ -47,6 +47,9 @@ namespace CadastroProduto.Dal
 
         }
 
-
+        public Usuario ConsultarId(int id)
+        {
+            return dbContext.Usuario.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

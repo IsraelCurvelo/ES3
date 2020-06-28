@@ -49,6 +49,31 @@ namespace CadastroProduto.Controllers
 
             return RedirectToAction("Create","Acessorios",linha);
 
-        }        
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            LinhaFacade facade = new LinhaFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            LinhaFacade facade = new LinhaFacade(dbContext);
+            var obj = facade.ConsultarId(id);
+            facade.Excluir(obj);
+            return RedirectToAction("Index");
+        }
     }
 }

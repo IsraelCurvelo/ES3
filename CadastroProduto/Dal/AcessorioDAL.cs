@@ -46,9 +46,10 @@ namespace CadastroProduto.Dal
             return resultado;
         }
 
-        public List<Acessorio> ExibirTodos(Acessorio cliente)
+        public Acessorio ConsultarId(int id)
         {
-            return dbContext.Acessorio.ToList();
+
+            return dbContext.Acessorio.FirstOrDefault(x => x.Id == id);
         }
     }
 }

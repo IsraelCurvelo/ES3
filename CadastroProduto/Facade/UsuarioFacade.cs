@@ -48,7 +48,13 @@ namespace CadastroProduto.Facade
             List<EntidadeDominio> list = new List<EntidadeDominio>();
             list=ud.Consultar(entidadeDominio);
             return list;
-        }       
+        }
+
+        public Usuario ConsultarId(int id)
+        {
+            UsuarioDAL dal = new UsuarioDAL(dbContext);
+            return dal.ConsultarId(id);
+        }
 
     }
 }

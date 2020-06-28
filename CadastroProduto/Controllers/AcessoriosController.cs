@@ -37,8 +37,7 @@ namespace CadastroProduto.Controllers
         public IActionResult Create(Linha linha)
         {
             
-            LinhaFacade lf = new LinhaFacade(dbContext);
-            //Linha lin = lf.ConsultarPorId(linha.Id);
+            LinhaFacade lf = new LinhaFacade(dbContext);           
             List<Linha> resultado = new List<Linha>();
             foreach (EntidadeDominio x in lf.Consultar(linha))
             {
@@ -62,8 +61,37 @@ namespace CadastroProduto.Controllers
 
             return RedirectToAction("Create", "Acessorios", acessorio.Linha);
           
-        }             
-        
+        }
+
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            AcessorioFacade facade = new AcessorioFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            AcessorioFacade facade = new AcessorioFacade(dbContext);
+            var obj = facade.ConsultarId(id);
+            facade.Excluir(obj);
+            return RedirectToAction("Index");
+        }
+
+
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

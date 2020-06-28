@@ -49,11 +49,11 @@ namespace CadastroProduto.Facade
             return list;
         }
 
-        public Linha ConsultarPorId(int id)
+        public Linha ConsultarId(int id)
         {           
                 LinhaDAL ld = new LinhaDAL(dbContext);            
-                Linha linha = ld.ConsultarPorId(id);
-                return linha;            
+                var obj = ld.ConsultarPorId(id);
+                return obj;            
         }
     }
 }
