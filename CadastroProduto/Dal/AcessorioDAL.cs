@@ -1,5 +1,6 @@
 ﻿using CadastroProduto.Data;
 using CadastroProduto.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,10 @@ namespace CadastroProduto.Dal
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
-            dbContext.Add(entidadeDominio);
-            dbContext.SaveChanges();
+           
+                dbContext.Add(entidadeDominio);
+                dbContext.SaveChanges();
+            
         }
 
         public void Alterar(EntidadeDominio entidadeDominio)

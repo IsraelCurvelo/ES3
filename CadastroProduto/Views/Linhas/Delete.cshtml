@@ -1,0 +1,42 @@
+﻿@model CadastroProduto.Models.Domain.Linha
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Excluir</h2>
+
+<h3>Tem certeza que deseja excluir essa Linha?</h3>
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Codigo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FichaTecnicaLinha.Descricao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FichaTecnicaLinha.Descricao)
+        </dd>
+       
+
+
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Excluir" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-primary">Cancelar</a>
+    </form>
+</div>

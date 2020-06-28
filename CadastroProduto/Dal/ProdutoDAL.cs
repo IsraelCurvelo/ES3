@@ -1,8 +1,10 @@
 ﻿using CadastroProduto.Data;
 using CadastroProduto.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace CadastroProduto.Dal
@@ -47,7 +49,15 @@ namespace CadastroProduto.Dal
 
         public Produto ConsultarId(int id)
         {
-            return dbContext.Produto.FirstOrDefault(x => x.Id == id);
+           
+            return dbContext.Produto
+                .Include(obj => obj.Cliente)
+                .Include(obj => obj.Cliente.Endereco)
+                .Include(obj => obj.FichaTecnica)
+                .Include(obj => obj.FichaTecnica.Categoria)
+                .Include(obj => obj.Linha)
+                .Include(obj => obj.Linha.Acessorio)
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }

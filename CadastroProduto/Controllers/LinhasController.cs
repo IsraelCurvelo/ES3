@@ -47,7 +47,7 @@ namespace CadastroProduto.Controllers
             lf.Cadastrar(linha);
 
 
-            return RedirectToAction("Create","AcessorioBasicos",linha);
+            return RedirectToAction("Create","Acessorios",linha);
 
         }        
     }

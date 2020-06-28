@@ -35,7 +35,8 @@ namespace CadastroProduto.Dal
 
         public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
         {
-            var list = dbContext.Linha.Where(x => x.Id == entidadeDominio.Id);
+            //var list = dbContext.Linha.Where(x => x.Id == entidadeDominio.Id);
+            var list = dbContext.Linha.ToList();
             List<EntidadeDominio> resultado = new List<EntidadeDominio>();
             foreach (EntidadeDominio x in list)
             {

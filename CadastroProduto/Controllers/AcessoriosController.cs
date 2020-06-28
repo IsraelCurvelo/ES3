@@ -38,9 +38,9 @@ namespace CadastroProduto.Controllers
         {
             
             LinhaFacade lf = new LinhaFacade(dbContext);
-            Linha lin = lf.ConsultarPorId(linha.Id);
+            //Linha lin = lf.ConsultarPorId(linha.Id);
             List<Linha> resultado = new List<Linha>();
-            foreach (EntidadeDominio x in lf.Consultar(lin))
+            foreach (EntidadeDominio x in lf.Consultar(linha))
             {
                 resultado.Add((Linha)x);
             }
@@ -61,8 +61,7 @@ namespace CadastroProduto.Controllers
             cf.Cadastrar(acessorio);
 
             return RedirectToAction("Create", "Acessorios", acessorio.Linha);
-
-           // return RedirectToAction("Create",acessorio.Linha.Id);
+          
         }             
         
 
@@ -76,7 +75,10 @@ namespace CadastroProduto.Controllers
 
        
 
-
+        public IActionResult CreateLinha()
+        {
+            return RedirectToAction("Create", "Linhas");
+        }
         
     }
 }

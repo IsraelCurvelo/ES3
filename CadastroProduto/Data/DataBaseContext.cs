@@ -10,7 +10,10 @@ namespace CadastroProduto.Data
 {
     public class DataBaseContext : DbContext
     {
-       
+        public DataBaseContext()
+        {
+        }
+
         public DataBaseContext (DbContextOptions<DataBaseContext> options)
             : base(options)
         {

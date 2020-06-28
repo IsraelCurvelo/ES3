@@ -12,14 +12,27 @@
         </div>
     </form>
 
-<h2>Ou Cadastre um novo Acessório BÁSICO</h2>
-
-<h4>Digite os dados</h4>
+<h2>Ou Cadastre um novo Acessório </h2>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
+        <form asp-action="CreateLinha">
+            <h4>Se desejar cadastrar uma linha que não esteja listada, clique aqui</h4>
+
+            <div class="form-group">
+                <input type="submit" value=" Nova Linha" class="btn-sm btn-success" />
+            </div>
+        </form>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Acessorio.LinhaId" class="control-label"></label>
+                <select asp-for="Acessorio.LinhaId" asp-items="@(new SelectList(Model.Linhas,"Id","Nome"))" class="form-control"></select>
+            </div>
+
+            <hr />
+
+
             <div class="form-group">
                 <label asp-for="Acessorio.Nome" class="control-label"></label>
                 <input asp-for="Acessorio.Nome" class="form-control" />
@@ -51,18 +64,15 @@
                         <input asp-for="Acessorio.Basico" /> @Html.DisplayNameFor(model => model.Acessorio.Basico)
                     </label>
                 </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Acessorio.LinhaId" class="control-label"></label>
-                    <select asp-for="Acessorio.LinhaId" asp-items="@(new SelectList(Model.Linhas,"Id","Nome"))" class="form-control"></select>
-                </div>
+            </div>
 
-                <div class="form-group">
 
-                    <input type="submit" value="Continuar" class="btn btn-success" />
-                </div>
-        </form>        
-        
+            <div class="form-group">
+
+                <input type="submit" value="Continuar" class="btn btn-success" />
+            </div>
+        </form>
+
     </div>
 </div>
 
