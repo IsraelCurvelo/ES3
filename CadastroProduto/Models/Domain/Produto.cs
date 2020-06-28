@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,6 +13,7 @@ namespace CadastroProduto.Models.Domain
         public String Nome { get; set; }
         public double Valor { get; set; }
         public DateTime DataEntrada { get; set; }
+        [Display(Name="Ativo?")]
         public Boolean Status { get; set; }
         public int Quantidade { get; set; }
         public Cliente Cliente { get; set; }
