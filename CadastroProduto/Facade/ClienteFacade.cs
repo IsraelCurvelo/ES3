@@ -36,7 +36,8 @@ namespace CadastroProduto.Facade
 
         public void Excluir(EntidadeDominio entidadeDominio)
         {
-
+            ClienteDAL dal = new ClienteDAL(dbContext);
+            dal.Excluir(entidadeDominio);
         }
 
         public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
