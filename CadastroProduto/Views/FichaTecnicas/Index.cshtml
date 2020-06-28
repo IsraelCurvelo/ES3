@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<CadastroProduto.Models.Domain.FichaTecnica>
-@{
-    ViewData["Title"] = "Ficha Técnica";
-}
+@{ ViewData["Title"] = "Ficha Técnica"; }
 
 <h2>@ViewData["Title"]</h2>
 <p>Fichas Técnicas cadastradas</p>
 <p>
-    <a asp-action="Consultar" class="btn btn-success">Consultar</a>
+    <a asp-action="Create" class="btn btn-success">Novo</a>
+    <a asp-action="Consultar" class="btn btn-info">Consultar</a>
 </p>
 
 
@@ -26,30 +25,30 @@
             <th>
 
             <th></th>
-            
+
 
         </tr>
     </thread>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Codigo)
-            </td>
-            
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-sm btn-primary">Alterar</a>|
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn-sm btn-info">Detalhes</a>
-                
-            </td>
-        </tr>
-        }
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Nome)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Codigo)
+    </td>
+
+    <td>
+        <a asp-action="Edit" asp-route-id="@item.Id" class="btn-sm btn-primary">Alterar</a>|
+        <a asp-action="Details" asp-route-id="@item.Id" class="btn-sm btn-info">Detalhes</a>|
+        <a asp-action="Delete" asp-route-id="@item.Id" class="btn-sm btn-danger">Excluir</a>
+
+    </td>
+</tr>}
     </tbody>
 </table>
