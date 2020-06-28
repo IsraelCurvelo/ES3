@@ -53,9 +53,14 @@ namespace CadastroProduto.Dal
             return dbContext.Produto
                 .Include(obj => obj.Cliente)
                 .Include(obj => obj.Cliente.Endereco)
+                .Include(obj => obj.Cliente.Endereco.Cidade)
+                .Include(obj => obj.Cliente.Endereco.Cidade.Estado)
                 .Include(obj => obj.FichaTecnica)
+                .Include(obj => obj.FichaTecnica.Componente)
                 .Include(obj => obj.FichaTecnica.Categoria)
+                .Include(obj => obj.FichaTecnica.Categoria.SubCategoria)
                 .Include(obj => obj.Linha)
+                .Include(obj => obj.Linha.FichaTecnicaLinha)
                 .Include(obj => obj.Linha.Acessorio)
                 .FirstOrDefault(x => x.Id == id);
         }

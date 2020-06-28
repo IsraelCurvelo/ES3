@@ -57,7 +57,7 @@ namespace CadastroProduto.Controllers
             {
                 return NotFound();
             }
-            LinhaFacade facade = new LinhaFacade(dbContext);
+           LinhaFacade facade = new LinhaFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
@@ -71,9 +71,25 @@ namespace CadastroProduto.Controllers
         public IActionResult Delete(int id)
         {
             LinhaFacade facade = new LinhaFacade(dbContext);
-            var obj = facade.ConsultarId(id);
+            
+            var obj = facade.ConsultarRemover(id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            LinhaFacade facade = new LinhaFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
         }
     }
 }

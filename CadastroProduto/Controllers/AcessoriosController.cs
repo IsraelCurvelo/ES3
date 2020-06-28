@@ -90,7 +90,20 @@ namespace CadastroProduto.Controllers
         }
 
 
-
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            AcessorioFacade facade = new AcessorioFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
 
 
         [HttpPost]

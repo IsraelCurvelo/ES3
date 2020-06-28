@@ -50,7 +50,9 @@ namespace CadastroProduto.Dal
         public Acessorio ConsultarId(int id)
         {
 
-            return dbContext.Acessorio.FirstOrDefault(x => x.Id == id);
+            return dbContext.Acessorio
+                .Include(x=>x.Linha )
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }

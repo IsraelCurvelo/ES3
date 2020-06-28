@@ -35,16 +35,9 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Create()
         {
-            EntidadeDominio linha = new Linha();
-            LinhaFacade lf = new LinhaFacade(dbContext);
-
-            List<Linha> resultado = new List<Linha>();
-            foreach (EntidadeDominio x in lf.Consultar(linha))
-            {
-                resultado.Add((Linha)x);
-            }
+            
            
-            return View(resultado);
+            return View();
         }
 
         [HttpPost]

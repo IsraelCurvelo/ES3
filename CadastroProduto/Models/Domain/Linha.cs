@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
@@ -12,8 +13,9 @@ namespace CadastroProduto.Models.Domain
         public String Nome { get; set; }
         public FichaTecnicaLinha FichaTecnicaLinha { get; set; }
         public Acessorio Acessorio { get; set; }
-       
 
+        [NotMapped]
+        public List<Acessorio> Acessorios { get; set; }
 
 
         public Linha()

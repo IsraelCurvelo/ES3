@@ -1,5 +1,7 @@
-﻿using CadastroProduto.Data;
+﻿using CadastroProduto.Controllers;
+using CadastroProduto.Data;
 using CadastroProduto.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +38,7 @@ namespace CadastroProduto.Dal
 
         public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
         {
-            //var list = dbContext.Linha.Where(x => x.Id == entidadeDominio.Id);
+            
             var list = dbContext.Linha.ToList();
             List<EntidadeDominio> resultado = new List<EntidadeDominio>();
             foreach (EntidadeDominio x in list)
@@ -49,7 +51,23 @@ namespace CadastroProduto.Dal
 
         public Linha ConsultarPorId(int id)
         {
-            return dbContext.Linha.FirstOrDefault(x => x.Id == id);
+            var linha = dbContext.Linha
+                .Include(obj => obj.FichaTecnicaLinha)
+                .Include(obj => obj.Acessorio)                
+                .FirstOrDefault(x => x.Id == id);
+            
+            var acessorios = dbContext.Acessorio.Where(x => x.LinhaId == id).ToList();            
+
+            Linha linhaA = new Linha { Id = linha.Id, Codigo = linha.Codigo, Nome = linha.Nome, FichaTecnicaLinha = linha.FichaTecnicaLinha, Acessorios = acessorios };
+            return linhaA;
+        }
+
+        public Linha ConsultarRemover(int id)
+        {
+            var linha = dbContext.Linha              
+                .FirstOrDefault(x => x.Id == id);
+
+            return linha;
         }
 
     }

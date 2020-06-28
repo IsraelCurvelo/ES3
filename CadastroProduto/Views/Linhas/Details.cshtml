@@ -1,0 +1,72 @@
+﻿@model CadastroProduto.Models.Domain.Linha
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Detalhes</h2>
+
+<h3>Dados da Linha</h3>
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Codigo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FichaTecnicaLinha.Descricao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FichaTecnicaLinha.Descricao)
+        </dd>
+        <h4>Lista de Acessórios Básico </h4>
+
+        @foreach (var item in Model.Acessorios)
+        {
+            if (item.Basico == true)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Acessorio)
+                    @Html.DisplayFor(model => item.Basico)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.Nome)
+                </dd>
+
+            }
+        }
+        <h4>Lista de Acessórios Opcional </h4>
+
+        @foreach (var item in Model.Acessorios)
+        {
+            if (item.Basico == false)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Acessorio)
+                    @Html.DisplayFor(model => item.Basico)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.Nome)
+                </dd>
+
+            }
+        }
+
+    </dl>
+
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Alterar" class="btn btn-info" />
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
+    </form>
+</div>

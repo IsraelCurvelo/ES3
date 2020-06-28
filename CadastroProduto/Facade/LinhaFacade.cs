@@ -56,5 +56,14 @@ namespace CadastroProduto.Facade
                 var obj = ld.ConsultarPorId(id);
                 return obj;            
         }
+
+        public Linha ConsultarRemover(int id)
+        {
+            LinhaDAL ld = new LinhaDAL(dbContext);
+            var obj = ld.ConsultarRemover(id);
+            return obj;
+        }
+
+
     }
 }

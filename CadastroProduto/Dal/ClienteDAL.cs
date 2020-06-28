@@ -51,7 +51,11 @@ namespace CadastroProduto.Dal
 
         public Cliente ConsultarId(int id)
         {
-            return dbContext.Cliente.FirstOrDefault(x => x.Id == id);
+            return dbContext.Cliente
+                .Include(x => x.Endereco)
+                .Include(x => x.Endereco.Cidade)
+                .Include(x => x.Endereco.Cidade.Estado)
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CadastroProduto.Data;
 using CadastroProduto.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,11 @@ namespace CadastroProduto.Dal
 
         public FichaTecnica ConsultarId(int id)
         {
-            return dbContext.FichaTecnica.FirstOrDefault(x => x.Id == id);
+            return dbContext.FichaTecnica
+                .Include(x => x.Componente)
+                .Include(x => x.Categoria)
+                .Include(x => x.Categoria.SubCategoria)                
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }
