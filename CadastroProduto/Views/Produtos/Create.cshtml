@@ -1,10 +1,8 @@
 ﻿@model CadastroProduto.Models.Domain.Produto
 
-@{
-    ViewData["Title"] = "Create";
-}
-  
-<h1><strong> Cadastro de Produto</strong> </h1> 
+@{ ViewData["Title"] = "Create"; }
+
+<h1><strong> Cadastro de Produto</strong> </h1>
 <hr />
 <h4>Digite os dados do <strong>PRODUTO</strong></h4>
 <hr />
@@ -12,7 +10,7 @@
     <div class="col-sm-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="Codigo" class="control-label"></label>
                 <input asp-for="Codigo" class="form-control" />
@@ -203,23 +201,22 @@
                 <input asp-for="Linha.Acessorio.Valor" class="form-control" />
                 <span asp-validation-for="Linha.Acessorio.Valor" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="Linha.Acessorio.Basico" /> @Html.DisplayNameFor(model => model.Linha.Acessorio.Basico)
-                    </label>
-                </div>
+            <div>
+                @Html.RadioButtonFor(m => Model.Linha.Acessorio.Basico, true) Básico
             </div>
+
             <hr />
 
 
             <div class="form-group">
                 <input type="submit" value="Salvar e Continuar" class="btn btn-success" /> <a asp-action="Index" class="btn btn-danger">Cancelar</a>
-</div>
+            </div>
         </form>
     </div>
 </div>
 
 
 
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

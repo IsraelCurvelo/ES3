@@ -9,12 +9,30 @@ namespace CadastroProduto.Models.Domain
 {
     public class Produto : EntidadeDominio
     {
+        [Required(ErrorMessage = "{0} obrigatório")]
+        [Display(Name = "Código")]
         public String Codigo { get; set; }
+
+        [Required(ErrorMessage = "{0} obrigatório")]
         public String Nome { get; set; }
+
+        [Required(ErrorMessage = "{0} obrigatório")]
+        [DisplayFormat(DataFormatString = "{0:0.##}")]
+        [Range(0, 500000000, ErrorMessage = "O valor deve ser no mínimo {1}")]
         public double Valor { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]
+        [Required(ErrorMessage = "{0} obrigatório")]
+        [Display(Name = "Data de entrada")]
         public DateTime DataEntrada { get; set; }
+
+        
         [Display(Name="Ativo?")]
         public Boolean Status { get; set; }
+
+        [Required(ErrorMessage = "{0} obrigatório")]
+        [Range(0, 500000000, ErrorMessage = "A quantidade deve ser no mínimo {1}")]
         public int Quantidade { get; set; }
         public Cliente Cliente { get; set; }
         public FichaTecnica FichaTecnica { get; set; }

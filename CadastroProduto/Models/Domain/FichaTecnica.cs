@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,10 +8,24 @@ namespace CadastroProduto.Models.Domain
 {
     public class FichaTecnica : EntidadeDominio
     {
+        [Required(ErrorMessage = "{0} obrigatório")]
+        [Display(Name = "Código")]
         public String Codigo { get; set; }
+
+        [Required(ErrorMessage = "{0} obrigatório")]
         public String Nome { get; set; }
+
+        [Required(ErrorMessage = "{0} obrigatório")]
+        [Display(Name = "Descrição")]
         public String Descricao { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]       
+        [Required(ErrorMessage = "{0} obrigatório")]
+        [Display(Name = "Data de Registro")]
         public DateTime DataRegistro { get; set; }
+
+        [Display(Name = "Observações")]        
         public String  Observacoes { get; set; }
         public Categoria Categoria { get; set; }
         public Componente Componente { get; set; }

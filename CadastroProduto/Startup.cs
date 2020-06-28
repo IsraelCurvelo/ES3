@@ -14,6 +14,8 @@ using CadastroProduto.Data;
 using CadastroProduto.Facade;
 using CadastroProduto.Dal;
 using CadastroProduto.Models.Domain;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace CadastroProduto
 {
@@ -31,6 +33,7 @@ namespace CadastroProduto
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
+                
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -55,6 +58,16 @@ namespace CadastroProduto
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var enUs = new CultureInfo("en-Us");
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(enUs),
+                SupportedCultures = new List<CultureInfo> { enUs },
+                SupportedUICultures = new List<CultureInfo> { enUs }
+
+            };
+
+            app.UseRequestLocalization(localizationOptions);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
