@@ -50,7 +50,7 @@ namespace CadastroProduto.Dal
         public Produto ConsultarId(int id)
         {
            
-            return dbContext.Produto
+            var produto = dbContext.Produto
                 .Include(obj => obj.Cliente)
                 .Include(obj => obj.Cliente.Endereco)
                 .Include(obj => obj.Cliente.Endereco.Cidade)
@@ -59,10 +59,14 @@ namespace CadastroProduto.Dal
                 .Include(obj => obj.FichaTecnica.Componente)
                 .Include(obj => obj.FichaTecnica.Categoria)
                 .Include(obj => obj.FichaTecnica.Categoria.SubCategoria)
-                .Include(obj => obj.Linha)
-                .Include(obj => obj.Linha.FichaTecnicaLinha)
-                .Include(obj => obj.Linha.Acessorio)
+                .Include(obj => obj.Linha)                             
                 .FirstOrDefault(x => x.Id == id);
+
+            LinhaDAL dal = new LinhaDAL(dbContext);
+            var linha = dal.ConsultarPorId(produto.Linha.Id);
+            produto.Linha = linha;   
+            
+            return produto;
         }
     }
 }

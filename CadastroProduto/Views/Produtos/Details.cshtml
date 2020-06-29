@@ -84,12 +84,28 @@
         <dd>
             @Html.DisplayFor(model => model.Linha.Nome)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Linha.Acessorios)
-        </dt>
 
 
+       
 
+        <h4>Lista de Acessórios  </h4>
+
+        @foreach (var item in Model.Linha.Acessorios)
+        {
+           
+                <dt>
+                    @Html.DisplayNameFor(model => model.Linha.Acessorio.Basico)
+                    @Html.DisplayFor(model => item.Basico)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.Nome)
+                </dd>
+
+           
+        }
+
+
+       
 
     </dl>
 

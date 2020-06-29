@@ -31,7 +31,7 @@ namespace CadastroProduto.Facade
 
         public void Alterar(EntidadeDominio entidadeDominio)
         {
-
+           
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)
