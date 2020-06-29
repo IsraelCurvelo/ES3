@@ -45,7 +45,7 @@ namespace CadastroProduto.Controllers
              UsuarioFacade uf = new UsuarioFacade(dbContext);
              uf.Cadastrar(usuario);
             
-            return RedirectToAction("IndexUsuario", "Home",usuario);
+            return RedirectToAction("Index", "Home");
 
         }
 
@@ -74,5 +74,24 @@ namespace CadastroProduto.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            UsuarioFacade facade = new UsuarioFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        public IActionResult Sair()
+        {
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

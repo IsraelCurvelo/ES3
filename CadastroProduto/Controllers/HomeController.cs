@@ -32,6 +32,12 @@ namespace CadastroProduto.Controllers
             return RedirectToAction("Create", "Produtos");
         }
 
+        public IActionResult Login(Usuario usuario)
+        {
+            // implementar
+
+            return RedirectToAction("IndexUsuario", "Home", usuario);
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

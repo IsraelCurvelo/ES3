@@ -1,12 +1,12 @@
 ﻿@model CadastroProduto.Models.Domain.Cliente
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h2>Excluir</h2>
+<h2>Detalhes</h2>
 
-<h3>Tem certeza que deseja excluir esse Cliente?</h3>
+<h3>Dados do Cliente</h3>
 <div>
 
     <hr />
@@ -68,12 +68,11 @@
             @Html.DisplayFor(model => model.Endereco.Cidade.Estado.Descricao)
         </dd>
 
-
     </dl>
 
-    <form asp-action="Delete">
+    <form asp-action="Edit">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Excluir" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-primary">Cancelar</a>
+        <input type="submit" value="Alterar" class="btn btn-info" />
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
     </form>
 </div>

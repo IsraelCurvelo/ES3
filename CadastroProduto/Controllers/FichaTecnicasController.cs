@@ -75,6 +75,20 @@ namespace CadastroProduto.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
 
     }
 }

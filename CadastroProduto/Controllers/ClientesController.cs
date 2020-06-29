@@ -78,5 +78,20 @@ namespace CadastroProduto.Controllers
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ClienteFacade facade = new ClienteFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
     }
 }

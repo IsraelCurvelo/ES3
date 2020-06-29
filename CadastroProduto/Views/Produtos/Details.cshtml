@@ -1,0 +1,101 @@
+﻿@model CadastroProduto.Models.Domain.Produto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Detalhes</h2>
+
+<h3>Dados do Produto</h3>
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Codigo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataEntrada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataEntrada)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantidade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cliente)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cliente.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cliente.Endereco)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cliente.Endereco.Logradouro), @Html.DisplayFor(model => model.Cliente.Endereco.Numero), @Html.DisplayFor(model => model.Cliente.Endereco.Complemento), @Html.DisplayFor(model => model.Cliente.Endereco.Bairro), @Html.DisplayFor(model => model.Cliente.Endereco.Cidade.Descricao)-@Html.DisplayFor(model => model.Cliente.Endereco.Cidade.Estado.Descricao)- @Html.DisplayFor(model => model.Cliente.Endereco.Cep)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FichaTecnica)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FichaTecnica.Codigo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FichaTecnica.Categoria)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FichaTecnica.Categoria.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FichaTecnica.Categoria.SubCategoria)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FichaTecnica.Categoria.SubCategoria.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Linha)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Linha.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Linha.Acessorios)
+        </dt>
+
+
+
+
+    </dl>
+
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Alterar" class="btn btn-info" />
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
+    </form>
+</div>
