@@ -1,4 +1,5 @@
 ﻿using CadastroProduto.Data;
+using CadastroProduto.Data.Exception;
 using CadastroProduto.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,11 +27,25 @@ namespace CadastroProduto.Dal
 
         public void Alterar(EntidadeDominio entidadeDominio)
         {
+            if (!dbContext.Usuario.Any(x => x.Id == entidadeDominio.Id))
+            {
+                throw new NotFoundException("Usuário não encontrado");
+            }
 
+            try
+            {
+                dbContext.Update(entidadeDominio);
+                dbContext.SaveChanges();
+            }catch(DbUpdateConcurrencyException e)
+            {
+                throw new DbException(e.Message);
+            }
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)
         {
+            
+
             dbContext.Remove(entidadeDominio);
             dbContext.SaveChanges();
         }

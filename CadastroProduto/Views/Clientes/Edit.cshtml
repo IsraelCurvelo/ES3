@@ -1,14 +1,16 @@
-﻿@model CadastroProduto.Models.Domain.Cliente
+﻿
+@model CadastroProduto.Models.Domain.Cliente
 
-@{ ViewData["Title"] = "Create"; }
+@{ ViewData["Title"] = "Edit"; }
 
-<h2>Cadastrar Novo Cliente</h2>
+<h2>Editar Cliente</h2>
 
 <h4>Digite os dados</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
@@ -20,7 +22,7 @@
                 <input asp-for="Cpf" class="form-control" />
                 <span asp-validation-for="Cpf" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group">                
                 <label asp-for="Endereco.Logradouro" class="control-label"></label>
                 <input asp-for="Endereco.Logradouro" class="form-control" />
                 <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
@@ -61,7 +63,7 @@
 
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" /> <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+                <input type="submit" value="Salvar" class="btn btn-success" /> <a asp-action="Index" class="btn btn-danger">Cancelar</a>
             </div>
         </form>
     </div>

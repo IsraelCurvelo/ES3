@@ -31,7 +31,8 @@ namespace CadastroProduto.Facade
 
         public void Alterar(EntidadeDominio entidadeDominio)
         {
-
+            FichaTecnicaDAL dal = new FichaTecnicaDAL(dbContext);
+            dal.Alterar(entidadeDominio);
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)

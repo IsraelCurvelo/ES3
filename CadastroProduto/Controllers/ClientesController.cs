@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
+using CadastroProduto.Data.Exception;
 using CadastroProduto.Facade;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
@@ -92,6 +93,50 @@ namespace CadastroProduto.Controllers
                 return NotFound();
             }
             return View(obj);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ClienteFacade facade = new ClienteFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Cliente cliente)
+        {
+
+            if (id != cliente.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                ClienteFacade facade = new ClienteFacade(dbContext);
+                facade.Alterar(cliente);
+                return RedirectToAction("Index");
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbException)
+            {
+                return BadRequest();
+            }
         }
     }
 }

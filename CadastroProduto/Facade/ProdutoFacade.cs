@@ -29,7 +29,8 @@ namespace CadastroProduto.Facade
 
         public void Alterar(EntidadeDominio entidadeDominio)
         {
-
+            ProdutoDAL dal = new ProdutoDAL(dbContext);
+            dal.Alterar(entidadeDominio);
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)

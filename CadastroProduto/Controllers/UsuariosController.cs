@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
+using CadastroProduto.Data.Exception;
 using CadastroProduto.Facade;
 using CadastroProduto.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +13,18 @@ namespace CadastroProduto.Controllers
 {
     public class UsuariosController : Controller
     {
-       private readonly DataBaseContext dbContext;
-        
+        private readonly DataBaseContext dbContext;
+
         public UsuariosController(DataBaseContext dbContext)
         {
-           this.dbContext = dbContext;          
+            this.dbContext = dbContext;
         }
 
         public IActionResult Index()
         {
             Usuario usuario = new Usuario();
-            UsuarioFacade uf = new UsuarioFacade(dbContext);    
-            
+            UsuarioFacade uf = new UsuarioFacade(dbContext);
+
             List<Usuario> resultado = new List<Usuario>();
             foreach (EntidadeDominio x in uf.Consultar(usuario))
             {
@@ -34,7 +35,7 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Create()
         {
-            
+
             return View();
         }
 
@@ -42,9 +43,9 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Usuario usuario)
         {
-             UsuarioFacade uf = new UsuarioFacade(dbContext);
-             uf.Cadastrar(usuario);
-            
+            UsuarioFacade uf = new UsuarioFacade(dbContext);
+            uf.Cadastrar(usuario);
+
             return RedirectToAction("Index", "Home");
 
         }
@@ -88,6 +89,54 @@ namespace CadastroProduto.Controllers
             }
             return View(obj);
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            UsuarioFacade facade = new UsuarioFacade(dbContext);
+            var obj = facade.ConsultarId(id.Value);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Usuario usuario)
+        {
+
+            if(id != usuario.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                UsuarioFacade facade = new UsuarioFacade(dbContext);
+                facade.Alterar(usuario);
+                return RedirectToAction("Index");
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbException)
+            {
+                return BadRequest();
+            }
+        }
+
+
+
+
 
         public IActionResult Sair()
         {
