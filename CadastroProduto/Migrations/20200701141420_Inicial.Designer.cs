@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CadastroProduto.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20200626042912_In")]
-    partial class In
+    [Migration("20200701141420_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,13 +26,16 @@ namespace CadastroProduto.Migrations
 
                     b.Property<bool>("Basico");
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.Property<int>("LinhaId");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.Property<int>("Quantidade");
 
@@ -51,7 +54,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.Property<int?>("SubCategoriaId");
 
@@ -67,7 +71,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.Property<int?>("EstadoId");
 
@@ -83,11 +88,13 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Cpf");
+                    b.Property<string>("Cpf")
+                        .IsRequired();
 
                     b.Property<int?>("EnderecoId");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -101,11 +108,14 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Basico");
+                    b.Property<string>("Basico")
+                        .IsRequired();
 
-                    b.Property<string>("Primario");
+                    b.Property<string>("Primario")
+                        .IsRequired();
 
-                    b.Property<string>("Secundario");
+                    b.Property<string>("Secundario")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -117,17 +127,21 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Bairro");
+                    b.Property<string>("Bairro")
+                        .IsRequired();
 
-                    b.Property<string>("Cep");
+                    b.Property<string>("Cep")
+                        .IsRequired();
 
                     b.Property<int?>("CidadeId");
 
                     b.Property<string>("Complemento");
 
-                    b.Property<string>("Logradouro");
+                    b.Property<string>("Logradouro")
+                        .IsRequired();
 
-                    b.Property<string>("Numero");
+                    b.Property<string>("Numero")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -143,17 +157,18 @@ namespace CadastroProduto.Migrations
 
                     b.Property<int?>("CategoriaId");
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
                     b.Property<int?>("ComponenteId");
 
                     b.Property<DateTime>("DataRegistro");
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
-                    b.Property<int>("LinhaId");
-
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.Property<string>("Observacoes");
 
@@ -163,8 +178,6 @@ namespace CadastroProduto.Migrations
 
                     b.HasIndex("ComponenteId");
 
-                    b.HasIndex("LinhaId");
-
                     b.ToTable("FichaTecnica");
                 });
 
@@ -173,7 +186,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -185,11 +199,13 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
                     b.Property<int?>("FichaTecnicaLinhaId");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -205,13 +221,17 @@ namespace CadastroProduto.Migrations
 
                     b.Property<int?>("ClienteId");
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
                     b.Property<DateTime>("DataEntrada");
 
                     b.Property<int?>("FichaTecnicaId");
 
-                    b.Property<string>("Nome");
+                    b.Property<int?>("LinhaId");
+
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.Property<int>("Quantidade");
 
@@ -225,6 +245,8 @@ namespace CadastroProduto.Migrations
 
                     b.HasIndex("FichaTecnicaId");
 
+                    b.HasIndex("LinhaId");
+
                     b.ToTable("Produto");
                 });
 
@@ -233,7 +255,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -245,13 +268,18 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ConfirmacaoSenha");
+                    b.Property<string>("ConfirmacaoSenha")
+                        .IsRequired();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
-                    b.Property<string>("Senha");
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -263,7 +291,9 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(2);
 
                     b.HasKey("Id");
 
@@ -272,7 +302,7 @@ namespace CadastroProduto.Migrations
 
             modelBuilder.Entity("CadastroProduto.Models.Domain.Acessorio", b =>
                 {
-                    b.HasOne("CadastroProduto.Models.Domain.Linha")
+                    b.HasOne("CadastroProduto.Models.Domain.Linha", "Linha")
                         .WithOne("Acessorio")
                         .HasForeignKey("CadastroProduto.Models.Domain.Acessorio", "LinhaId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -315,11 +345,6 @@ namespace CadastroProduto.Migrations
                     b.HasOne("CadastroProduto.Models.Domain.Componente", "Componente")
                         .WithMany()
                         .HasForeignKey("ComponenteId");
-
-                    b.HasOne("CadastroProduto.Models.Domain.Linha", "Linha")
-                        .WithMany()
-                        .HasForeignKey("LinhaId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CadastroProduto.Models.Domain.Linha", b =>
@@ -338,6 +363,10 @@ namespace CadastroProduto.Migrations
                     b.HasOne("CadastroProduto.Models.Domain.FichaTecnica", "FichaTecnica")
                         .WithMany()
                         .HasForeignKey("FichaTecnicaId");
+
+                    b.HasOne("CadastroProduto.Models.Domain.Linha", "Linha")
+                        .WithMany()
+                        .HasForeignKey("LinhaId");
                 });
 #pragma warning restore 612, 618
         }

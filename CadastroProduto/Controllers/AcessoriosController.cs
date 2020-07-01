@@ -57,7 +57,7 @@ namespace CadastroProduto.Controllers
         public IActionResult Create(Acessorio acessorio)
         {
             
-            AcessorioFacade cf = new AcessorioFacade(dbContext);
+            AcessorioFacade cf = new AcessorioFacade(dbContext);                  
             cf.Cadastrar(acessorio);
 
             return RedirectToAction("Create", "Acessorios", acessorio.Linha);
@@ -120,8 +120,20 @@ namespace CadastroProduto.Controllers
             {
                 return NotFound();
             }
+            
+            LinhaFacade lf = new LinhaFacade(dbContext);
+            List<Linha> resultado = new List<Linha>();
+            foreach (EntidadeDominio x in lf.Consultar(obj.Linha))
+            {
+                resultado.Add((Linha)x);
+            }
 
-            return View(obj);
+            var viewModel = new AcessorioBasicoFormViewModel { Acessorio = obj, Linhas = resultado };
+
+            return View(viewModel);         
+                   
+
+            
         }
 
         [HttpPost]

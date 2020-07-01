@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CadastroProduto.Migrations
 {
-    public partial class inicial : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,9 +14,9 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Basico = table.Column<string>(nullable: true),
-                    Primario = table.Column<string>(nullable: true),
-                    Secundario = table.Column<string>(nullable: true)
+                    Basico = table.Column<string>(nullable: false),
+                    Primario = table.Column<string>(nullable: false),
+                    Secundario = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +29,7 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(nullable: true)
+                    Descricao = table.Column<string>(maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +42,7 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(nullable: true)
+                    Descricao = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,7 +55,7 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(nullable: true)
+                    Descricao = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,10 +68,10 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Senha = table.Column<string>(nullable: true),
-                    ConfirmacaoSenha = table.Column<string>(nullable: true)
+                    Nome = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Senha = table.Column<string>(maxLength: 20, nullable: false),
+                    ConfirmacaoSenha = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,7 +84,7 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(nullable: true),
+                    Descricao = table.Column<string>(nullable: false),
                     EstadoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -104,8 +104,8 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Codigo = table.Column<string>(nullable: true),
-                    Nome = table.Column<string>(nullable: true),
+                    Codigo = table.Column<string>(nullable: false),
+                    Nome = table.Column<string>(nullable: false),
                     FichaTecnicaLinhaId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -125,7 +125,7 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(nullable: true),
+                    Descricao = table.Column<string>(nullable: false),
                     SubCategoriaId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -145,11 +145,11 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Logradouro = table.Column<string>(nullable: true),
-                    Numero = table.Column<string>(nullable: true),
+                    Logradouro = table.Column<string>(nullable: false),
+                    Numero = table.Column<string>(nullable: false),
                     Complemento = table.Column<string>(nullable: true),
-                    Bairro = table.Column<string>(nullable: true),
-                    Cep = table.Column<string>(nullable: true),
+                    Bairro = table.Column<string>(nullable: false),
+                    Cep = table.Column<string>(nullable: false),
                     CidadeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -169,9 +169,9 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: true),
-                    Codigo = table.Column<string>(nullable: true),
-                    Descricao = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(nullable: false),
+                    Codigo = table.Column<string>(nullable: false),
+                    Descricao = table.Column<string>(nullable: false),
                     Quantidade = table.Column<int>(nullable: false),
                     Valor = table.Column<double>(nullable: false),
                     Basico = table.Column<bool>(nullable: false),
@@ -194,14 +194,13 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Codigo = table.Column<string>(nullable: true),
-                    Nome = table.Column<string>(nullable: true),
-                    Descricao = table.Column<string>(nullable: true),
+                    Codigo = table.Column<string>(nullable: false),
+                    Nome = table.Column<string>(nullable: false),
+                    Descricao = table.Column<string>(nullable: false),
                     DataRegistro = table.Column<DateTime>(nullable: false),
                     Observacoes = table.Column<string>(nullable: true),
                     CategoriaId = table.Column<int>(nullable: true),
-                    ComponenteId = table.Column<int>(nullable: true),
-                    LinhaId = table.Column<int>(nullable: false)
+                    ComponenteId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,12 +217,6 @@ namespace CadastroProduto.Migrations
                         principalTable: "Componente",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FichaTecnica_Linha_LinhaId",
-                        column: x => x.LinhaId,
-                        principalTable: "Linha",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -232,8 +225,8 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: true),
-                    Cpf = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(nullable: false),
+                    Cpf = table.Column<string>(nullable: false),
                     EnderecoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -253,14 +246,15 @@ namespace CadastroProduto.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Codigo = table.Column<string>(nullable: true),
-                    Nome = table.Column<string>(nullable: true),
+                    Codigo = table.Column<string>(nullable: false),
+                    Nome = table.Column<string>(nullable: false),
                     Valor = table.Column<double>(nullable: false),
                     DataEntrada = table.Column<DateTime>(nullable: false),
                     Status = table.Column<bool>(nullable: false),
                     Quantidade = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: true),
-                    FichaTecnicaId = table.Column<int>(nullable: true)
+                    FichaTecnicaId = table.Column<int>(nullable: true),
+                    LinhaId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -275,6 +269,12 @@ namespace CadastroProduto.Migrations
                         name: "FK_Produto_FichaTecnica_FichaTecnicaId",
                         column: x => x.FichaTecnicaId,
                         principalTable: "FichaTecnica",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Produto_Linha_LinhaId",
+                        column: x => x.LinhaId,
+                        principalTable: "Linha",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -316,11 +316,6 @@ namespace CadastroProduto.Migrations
                 column: "ComponenteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FichaTecnica_LinhaId",
-                table: "FichaTecnica",
-                column: "LinhaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Linha_FichaTecnicaLinhaId",
                 table: "Linha",
                 column: "FichaTecnicaLinhaId");
@@ -334,6 +329,11 @@ namespace CadastroProduto.Migrations
                 name: "IX_Produto_FichaTecnicaId",
                 table: "Produto",
                 column: "FichaTecnicaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Produto_LinhaId",
+                table: "Produto",
+                column: "LinhaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -354,6 +354,9 @@ namespace CadastroProduto.Migrations
                 name: "FichaTecnica");
 
             migrationBuilder.DropTable(
+                name: "Linha");
+
+            migrationBuilder.DropTable(
                 name: "Endereco");
 
             migrationBuilder.DropTable(
@@ -363,16 +366,13 @@ namespace CadastroProduto.Migrations
                 name: "Componente");
 
             migrationBuilder.DropTable(
-                name: "Linha");
+                name: "FichaTecnicaLinha");
 
             migrationBuilder.DropTable(
                 name: "Cidade");
 
             migrationBuilder.DropTable(
                 name: "SubCategoria");
-
-            migrationBuilder.DropTable(
-                name: "FichaTecnicaLinha");
 
             migrationBuilder.DropTable(
                 name: "Estado");

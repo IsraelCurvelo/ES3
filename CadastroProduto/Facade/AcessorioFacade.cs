@@ -23,7 +23,7 @@ namespace CadastroProduto.Facade
             // usuario.ValidarSenha();
             // usuario.ValidarLogin();
             // usuario.CriptografarSenha();
-            AcessorioDAL cd = new AcessorioDAL(dbContext);
+            AcessorioDAL cd = new AcessorioDAL(dbContext);           
             cd.Cadastrar(entidadeDominio);
             Log.Gerar(new Dictionary<string, string>());
 

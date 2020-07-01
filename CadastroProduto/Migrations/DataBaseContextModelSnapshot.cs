@@ -24,13 +24,16 @@ namespace CadastroProduto.Migrations
 
                     b.Property<bool>("Basico");
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.Property<int>("LinhaId");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.Property<int>("Quantidade");
 
@@ -49,7 +52,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.Property<int?>("SubCategoriaId");
 
@@ -65,7 +69,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.Property<int?>("EstadoId");
 
@@ -81,11 +86,13 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Cpf");
+                    b.Property<string>("Cpf")
+                        .IsRequired();
 
                     b.Property<int?>("EnderecoId");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -99,11 +106,14 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Basico");
+                    b.Property<string>("Basico")
+                        .IsRequired();
 
-                    b.Property<string>("Primario");
+                    b.Property<string>("Primario")
+                        .IsRequired();
 
-                    b.Property<string>("Secundario");
+                    b.Property<string>("Secundario")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -115,17 +125,21 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Bairro");
+                    b.Property<string>("Bairro")
+                        .IsRequired();
 
-                    b.Property<string>("Cep");
+                    b.Property<string>("Cep")
+                        .IsRequired();
 
                     b.Property<int?>("CidadeId");
 
                     b.Property<string>("Complemento");
 
-                    b.Property<string>("Logradouro");
+                    b.Property<string>("Logradouro")
+                        .IsRequired();
 
-                    b.Property<string>("Numero");
+                    b.Property<string>("Numero")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -141,15 +155,18 @@ namespace CadastroProduto.Migrations
 
                     b.Property<int?>("CategoriaId");
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
                     b.Property<int?>("ComponenteId");
 
                     b.Property<DateTime>("DataRegistro");
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.Property<string>("Observacoes");
 
@@ -167,7 +184,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -179,11 +197,13 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
                     b.Property<int?>("FichaTecnicaLinhaId");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -199,7 +219,8 @@ namespace CadastroProduto.Migrations
 
                     b.Property<int?>("ClienteId");
 
-                    b.Property<string>("Codigo");
+                    b.Property<string>("Codigo")
+                        .IsRequired();
 
                     b.Property<DateTime>("DataEntrada");
 
@@ -207,7 +228,8 @@ namespace CadastroProduto.Migrations
 
                     b.Property<int?>("LinhaId");
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
                     b.Property<int>("Quantidade");
 
@@ -231,7 +253,8 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -243,13 +266,18 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ConfirmacaoSenha");
+                    b.Property<string>("ConfirmacaoSenha")
+                        .IsRequired();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Nome");
+                    b.Property<string>("Nome")
+                        .IsRequired();
 
-                    b.Property<string>("Senha");
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -261,7 +289,9 @@ namespace CadastroProduto.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Descricao");
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(2);
 
                     b.HasKey("Id");
 
