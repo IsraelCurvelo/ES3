@@ -17,6 +17,7 @@ namespace CadastroProduto.Models.Domain
         [DataType(DataType.EmailAddress)]
         public String Email { get; set; }
 
+       
         [Required(ErrorMessage = "{0} obrigatória")]
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 8 ,ErrorMessage = "A Senha deve ser composta de pelo menos {2} caracteres, ter letras maiúsculas e minúsculas e também conter caracteres especiais.")]

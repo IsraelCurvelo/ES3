@@ -52,6 +52,7 @@ namespace CadastroProduto.Dal
 
         public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
         {
+            
             var list = dbContext.Usuario.ToList();
             List<EntidadeDominio> resultado = new List<EntidadeDominio>();
             foreach (EntidadeDominio x in list)

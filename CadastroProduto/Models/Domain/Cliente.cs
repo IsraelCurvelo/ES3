@@ -13,6 +13,7 @@ namespace CadastroProduto.Models.Domain
 
         [Required(ErrorMessage = "{0} obrigatório")]
         [Display(Name = "CPF")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "O {0} deve conter {1}caracteres")]
         public String Cpf { get; set; }
         
         public Endereco Endereco { get; set; }

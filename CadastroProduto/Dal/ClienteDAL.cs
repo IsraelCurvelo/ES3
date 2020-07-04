@@ -36,7 +36,7 @@ namespace CadastroProduto.Dal
 
             try
             {
-                dbContext.Update(entidadeDominio);
+                dbContext.Update(entidadeDominio);                
                 dbContext.SaveChanges();
             }
             catch (DbUpdateConcurrencyException e)

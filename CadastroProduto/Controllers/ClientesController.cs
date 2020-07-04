@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
@@ -126,7 +127,10 @@ namespace CadastroProduto.Controllers
             try
             {
                 ClienteFacade facade = new ClienteFacade(dbContext);
-                facade.Alterar(cliente);
+                facade.Alterar(cliente);           
+
+
+
                 return RedirectToAction("Index");
             }
             catch (NotFoundException)

@@ -2,6 +2,7 @@
 using CadastroProduto.Data;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
+using CadastroProduto.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,23 @@ namespace CadastroProduto.Facade
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
-           // usuario.ValidarSenha();
-           // usuario.ValidarLogin();
-           // usuario.CriptografarSenha();
+            var obj = (Usuario)entidadeDominio;
+            ValidarSenha vs = new ValidarSenha();
+            var conf = vs.Processar(entidadeDominio);
 
+            CriptografarSenha crip = new CriptografarSenha();
+            var senhacrip = crip.Processar(entidadeDominio);
 
-            UsuarioDAL ud = new UsuarioDAL(dbContext);
-            ud.Cadastrar(entidadeDominio);
-            Log.Gerar(new Dictionary<string, string>());
+            obj.Senha = senhacrip;
+
+            if (conf != null && senhacrip != null)
+            {
+                UsuarioDAL ud = new UsuarioDAL(dbContext);
+                ud.Cadastrar(obj);
+
+                GerarLog log = new GerarLog();
+                log.Processar(obj);
+            }
 
         }
 

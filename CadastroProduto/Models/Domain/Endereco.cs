@@ -22,6 +22,8 @@ namespace CadastroProduto.Models.Domain
         public String Bairro { get; set; }
 
         [Required(ErrorMessage = "{0} obrigatório")]
+
+        [StringLength(8, MinimumLength = 8, ErrorMessage = "O {0} deve conter {1}caracteres")]
         public String Cep { get; set; }
         public Cidade Cidade { get; set; }
 
