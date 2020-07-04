@@ -6,12 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
+using Microsoft.EntityFrameworkCore;
+using CadastroProduto.Facade;
+using CadastroProduto.Data;
 
 namespace CadastroProduto.Controllers
 {
     public class HomeController : Controller
     {
-        
+        private readonly DataBaseContext dbContext;
+
+        public HomeController(DataBaseContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -19,6 +28,7 @@ namespace CadastroProduto.Controllers
 
         public IActionResult IndexUsuario(Usuario usuario)
         {
+
             return View(usuario);
         }
 
@@ -34,9 +44,14 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Login(Usuario usuario)
         {
-            // implementar
+            UsuarioFacade facade = new UsuarioFacade(dbContext);
+            var conf = facade.Login(usuario);
+            if (conf)
+            {
+                return RedirectToAction("IndexUsuario", "Home", usuario);
+            }
 
-            return RedirectToAction("IndexUsuario", "Home", usuario);
+            return RedirectToAction("Home");
         }
 
 

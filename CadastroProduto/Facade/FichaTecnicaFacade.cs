@@ -2,6 +2,7 @@
 using CadastroProduto.Data;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
+using CadastroProduto.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,18 @@ namespace CadastroProduto.Facade
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
-            // usuario.ValidarSenha();
-            // usuario.ValidarLogin();
-            // usuario.CriptografarSenha();
-            FichaTecnicaDAL ftd = new FichaTecnicaDAL(dbContext);
-            ftd.Cadastrar(entidadeDominio);
-            Log.Gerar(new Dictionary<string, string>());
+            ValidarDadosFichaTecnica validar = new ValidarDadosFichaTecnica();
+            var conf = validar.Processar(entidadeDominio);
+
+            if(conf != null)
+            {
+                FichaTecnicaDAL ftd = new FichaTecnicaDAL(dbContext);
+                ftd.Cadastrar(entidadeDominio);
+
+                GerarLog log = new GerarLog();
+                log.Processar(entidadeDominio);
+            }           
+            
 
         }
 

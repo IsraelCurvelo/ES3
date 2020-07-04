@@ -69,5 +69,18 @@ namespace CadastroProduto.Facade
             return dal.ConsultarId(id);
         }
 
+        public bool Login(EntidadeDominio entidadeDominio)
+        {
+            var obj = (Usuario)entidadeDominio;
+            CriptografarSenha crip = new CriptografarSenha();
+            var senhacrip = crip.Processar(entidadeDominio);
+
+            obj.Senha = senhacrip;
+
+            UsuarioDAL dal = new UsuarioDAL(dbContext);
+            var conf = dal.Login(obj);
+            return conf;
+        }
+
     }
 }

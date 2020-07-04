@@ -29,6 +29,7 @@ namespace CadastroProduto.Dal
 
         public void Alterar(EntidadeDominio entidadeDominio)
         {
+            
             if (!dbContext.Cliente.Any(x => x.Id == entidadeDominio.Id))
             {
                 throw new NotFoundException("Cliente não encontrado");

@@ -68,5 +68,23 @@ namespace CadastroProduto.Dal
         {
             return dbContext.Usuario.FirstOrDefault(x => x.Id == id);
         }
+
+        public bool Login(EntidadeDominio entidadeDominio)
+        {
+            var obj = (Usuario)entidadeDominio;
+            var usuarioBanco = dbContext.Usuario.FirstOrDefault(x => x.Email == obj.Email);
+            if (usuarioBanco == null)
+            {
+                throw new NotFoundException("EMAIL NAO ENCONTRADO!");
+            }
+
+            if (obj.Senha == usuarioBanco.Senha)
+            {
+                return true;
+            }
+
+            throw new NotFoundException("A SENHA OU EMAIL ESTÁ INCORRETA");
+            return false;
+        }
     }
 }

@@ -2,6 +2,7 @@
 using CadastroProduto.Data;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
+using CadastroProduto.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,17 @@ namespace CadastroProduto.Facade
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
-                       
-            ProdutoDAL pd = new ProdutoDAL(dbContext);
-            pd.Cadastrar(entidadeDominio);
-            Log.Gerar(new Dictionary<string, string>());
+            ValidarDadosProduto validar = new ValidarDadosProduto();
+            var conf = validar.Processar(entidadeDominio);
+
+            if (conf != null)
+            {
+                ProdutoDAL pd = new ProdutoDAL(dbContext);
+                pd.Cadastrar(entidadeDominio);
+                GerarLog log = new GerarLog();
+                log.Processar(entidadeDominio);
+            }                    
+            
 
         }
 
