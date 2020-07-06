@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
@@ -7,7 +8,9 @@ using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
 using CadastroProduto.Facade;
 using CadastroProduto.Models.Domain;
+using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace CadastroProduto.Controllers
 {
@@ -54,13 +57,15 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                String erro = "Id não encontrado";
+                return RedirectToAction(nameof(Error), erro);
             }
             UsuarioFacade facade = new UsuarioFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                String erro = "Id não encontrado";
+                return RedirectToAction(nameof(Error), erro);
             }
             return View(obj);
         }
@@ -79,13 +84,15 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                String erro = "Id não encontrado";
+                return RedirectToAction(nameof(Error),erro);
             }
             UsuarioFacade facade = new UsuarioFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                String erro = "Id não encontrado";
+                return RedirectToAction(nameof(Error), erro);
             }
             return View(obj);
         }
@@ -94,15 +101,17 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                String erro = "Id não encontrado";
+                return RedirectToAction(nameof(Error), erro);
             }
 
-            UsuarioFacade facade = new UsuarioFacade(dbContext);
+                UsuarioFacade facade = new UsuarioFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
 
             if (obj == null)
             {
-                return NotFound();
+                String erro = "Id não encontrado";
+                return RedirectToAction(nameof(Error), erro);
             }
 
             return View(obj);
@@ -136,7 +145,15 @@ namespace CadastroProduto.Controllers
 
 
 
-
+        public IActionResult Error(String message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
+        }
 
         public IActionResult Sair()
         {

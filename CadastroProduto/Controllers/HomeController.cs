@@ -9,6 +9,8 @@ using CadastroProduto.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using CadastroProduto.Facade;
 using CadastroProduto.Data;
+using CadastroProduto.Models.ViewModels;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace CadastroProduto.Controllers
 {
@@ -46,19 +48,25 @@ namespace CadastroProduto.Controllers
         {
             UsuarioFacade facade = new UsuarioFacade(dbContext);
             var conf = facade.Login(usuario);
-            if (conf)
+            if (conf )
             {
-                return RedirectToAction("IndexUsuario", "Home", usuario);
+                var logado = facade.ConsultarEmail(usuario.Email);
+                return RedirectToAction("IndexUsuario", "Home", logado);
             }
 
-            return RedirectToAction("Home");
+            return RedirectToAction("Error","Home",new  { message = "Email ou senha incorreto!"});
         }
 
+       
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(String message)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }

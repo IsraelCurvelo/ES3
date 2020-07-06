@@ -69,6 +69,12 @@ namespace CadastroProduto.Facade
             return dal.ConsultarId(id);
         }
 
+        public Usuario ConsultarEmail(String email)
+        {
+            UsuarioDAL dal = new UsuarioDAL(dbContext);
+            return dal.ConsultarEmail(email);
+        }
+
         public bool Login(EntidadeDominio entidadeDominio)
         {
             var obj = (Usuario)entidadeDominio;

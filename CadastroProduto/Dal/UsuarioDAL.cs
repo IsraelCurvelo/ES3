@@ -1,6 +1,7 @@
 ﻿using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
 using CadastroProduto.Models.Domain;
+using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -69,22 +70,29 @@ namespace CadastroProduto.Dal
             return dbContext.Usuario.FirstOrDefault(x => x.Id == id);
         }
 
-        public bool Login(EntidadeDominio entidadeDominio)
+        public Usuario ConsultarEmail(String email)
         {
+            return dbContext.Usuario.FirstOrDefault(x => x.Email == email);
+        }
+
+
+        public bool Login(EntidadeDominio entidadeDominio)
+        {            
             var obj = (Usuario)entidadeDominio;
             var usuarioBanco = dbContext.Usuario.FirstOrDefault(x => x.Email == obj.Email);
             if (usuarioBanco == null)
             {
-                throw new NotFoundException("EMAIL NAO ENCONTRADO!");
+                
+                return false;
             }
 
             if (obj.Senha == usuarioBanco.Senha)
             {
                 return true;
-            }
-
-            throw new NotFoundException("A SENHA OU EMAIL ESTÁ INCORRETA");
-            return false;
+            }            
+                
+            return false; ;
+           
         }
     }
 }

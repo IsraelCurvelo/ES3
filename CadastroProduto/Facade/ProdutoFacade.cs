@@ -29,7 +29,8 @@ namespace CadastroProduto.Facade
                 ProdutoDAL pd = new ProdutoDAL(dbContext);
                 pd.Cadastrar(entidadeDominio);
                 GerarLog log = new GerarLog();
-                log.Processar(entidadeDominio);
+                var logg = log.Processar(entidadeDominio);                
+
             }                    
             
 

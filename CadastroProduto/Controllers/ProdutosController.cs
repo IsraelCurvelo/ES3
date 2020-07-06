@@ -136,6 +136,12 @@ namespace CadastroProduto.Controllers
             {
                 return BadRequest();
             }
+
+        }
+
+        public IActionResult Consultar()
+        {
+            return View();
         }
     }
 }

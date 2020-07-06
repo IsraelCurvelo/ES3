@@ -20,9 +20,7 @@ namespace CadastroProduto.Facade
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
-            // usuario.ValidarSenha();
-            // usuario.ValidarLogin();
-            // usuario.CriptografarSenha();
+            
             ClienteDAL cd = new ClienteDAL(dbContext);
             cd.Cadastrar(entidadeDominio);
             Log.Gerar(new Dictionary<string, string>());

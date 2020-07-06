@@ -1,4 +1,5 @@
-﻿using CadastroProduto.Models.Domain;
+﻿using CadastroProduto.Dal;
+using CadastroProduto.Models.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,7 @@ namespace CadastroProduto.Strategy
     {
         public String Processar(EntidadeDominio entidadeDominio)
         {
-            
-
-            return "";
+            return "Log Gerado";        
 
         }
     }

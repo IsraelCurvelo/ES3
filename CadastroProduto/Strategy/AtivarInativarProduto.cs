@@ -21,7 +21,7 @@ namespace CadastroProduto.Strategy
                 produto.Status = true;
             }
 
-            return "";
+            return null;
 
         }
     }
