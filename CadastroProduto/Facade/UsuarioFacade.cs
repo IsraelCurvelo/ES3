@@ -19,7 +19,7 @@ namespace CadastroProduto.Facade
             this.dbContext = dbContext;           
         }
 
-        public void Cadastrar(EntidadeDominio entidadeDominio)
+        public String Cadastrar(EntidadeDominio entidadeDominio)
         {
             var obj = (Usuario)entidadeDominio;
             ValidarSenha vs = new ValidarSenha();
@@ -30,14 +30,17 @@ namespace CadastroProduto.Facade
 
             obj.Senha = senhacrip;
 
-            if (conf != null && senhacrip != null)
+            if (conf == null && senhacrip != null)
             {
                 UsuarioDAL ud = new UsuarioDAL(dbContext);
                 ud.Cadastrar(obj);
 
                 GerarLog log = new GerarLog();
-                log.Processar(obj);
+                var resLog = log.Processar(obj);
+                
+                return null;
             }
+            return conf;
 
         }
 

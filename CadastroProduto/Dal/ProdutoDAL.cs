@@ -29,7 +29,7 @@ namespace CadastroProduto.Dal
         {
             if (!dbContext.Produto.Any(x => x.Id == entidadeDominio.Id))
             {
-                throw new NotFoundException("Produto não encontrado");
+                throw new ApplicationException("Produto não encontrado");
             }
 
             try
@@ -37,9 +37,9 @@ namespace CadastroProduto.Dal
                 dbContext.Update(entidadeDominio);
                 dbContext.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (ApplicationException e)
             {
-                throw new DbException(e.Message);
+                throw new ApplicationException(e.Message);
             }
         }
 
@@ -63,24 +63,33 @@ namespace CadastroProduto.Dal
 
         public Produto ConsultarId(int id)
         {
-           
-            var produto = dbContext.Produto
-                .Include(obj => obj.Cliente)
-                .Include(obj => obj.Cliente.Endereco)
-                .Include(obj => obj.Cliente.Endereco.Cidade)
-                .Include(obj => obj.Cliente.Endereco.Cidade.Estado)
-                .Include(obj => obj.FichaTecnica)
-                .Include(obj => obj.FichaTecnica.Componente)
-                .Include(obj => obj.FichaTecnica.Categoria)
-                .Include(obj => obj.FichaTecnica.Categoria.SubCategoria)
-                .Include(obj => obj.Linha)                             
-                .FirstOrDefault(x => x.Id == id);
+            try
+            {
+                var produto = dbContext.Produto
+                    .Include(obj => obj.Cliente)
+                    .Include(obj => obj.Cliente.Endereco)
+                    .Include(obj => obj.Cliente.Endereco.Cidade)
+                    .Include(obj => obj.Cliente.Endereco.Cidade.Estado)
+                    .Include(obj => obj.FichaTecnica)
+                    .Include(obj => obj.FichaTecnica.Componente)
+                    .Include(obj => obj.FichaTecnica.Categoria)
+                    .Include(obj => obj.FichaTecnica.Categoria.SubCategoria)
+                    .Include(obj => obj.Linha)
+                    .FirstOrDefault(x => x.Id == id);
 
-            LinhaDAL dal = new LinhaDAL(dbContext);
-            var linha = dal.ConsultarPorId(produto.Linha.Id);
-            produto.Linha = linha;   
-            
-            return produto;
+                if(produto == null)
+                {
+                    return null;
+                }
+                LinhaDAL dal = new LinhaDAL(dbContext);
+                var linha = dal.ConsultarPorId(produto.Linha.Id);
+                produto.Linha = linha;
+
+                return produto;
+            }catch(ApplicationException e)
+            {
+                throw new ApplicationException(e.Message);
+            }
         }
     }
 }

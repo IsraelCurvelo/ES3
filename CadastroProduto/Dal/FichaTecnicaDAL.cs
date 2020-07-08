@@ -28,7 +28,7 @@ namespace CadastroProduto.Dal
         {
             if (!dbContext.FichaTecnica.Any(x => x.Id == entidadeDominio.Id))
             {
-                throw new NotFoundException("Ficha Técnica não encontrado");
+                throw new NotFoundException("Ficha Técnica não encontrada");
             }
 
             try
@@ -36,9 +36,9 @@ namespace CadastroProduto.Dal
                 dbContext.Update(entidadeDominio);
                 dbContext.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (ApplicationException e)
             {
-                throw new DbException(e.Message);
+                throw new ApplicationException(e.Message);
             }
         }
 

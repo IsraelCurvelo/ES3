@@ -21,6 +21,7 @@ namespace CadastroProduto.Dal
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
+            
             dbContext.Add(entidadeDominio);
             dbContext.SaveChanges();
         }
@@ -38,9 +39,9 @@ namespace CadastroProduto.Dal
                 dbContext.Update(entidadeDominio);
                 dbContext.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (ApplicationException e)
             {
-                throw new DbException(e.Message);
+                throw new ApplicationException(e.Message);
             }
         }
 
@@ -70,10 +71,15 @@ namespace CadastroProduto.Dal
                 .Include(obj => obj.Acessorio)                
                 .FirstOrDefault(x => x.Id == id);
             
+            if (linha == null)
+            {
+                return null;
+            }
             var acessorios = dbContext.Acessorio.Where(x => x.LinhaId == id).ToList();            
 
             Linha linhaA = new Linha { Id = linha.Id, Codigo = linha.Codigo, Nome = linha.Nome, FichaTecnicaLinha = linha.FichaTecnicaLinha, Acessorios = acessorios };
             return linhaA;
+
         }
 
         public Linha ConsultarRemover(int id)

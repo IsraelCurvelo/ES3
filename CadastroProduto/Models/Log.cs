@@ -9,11 +9,6 @@ namespace CadastroProduto.Models
     {
 		private String descricao;
 
-		public static void Gerar(Dictionary<String, String> atributos)
-		{
-			
-		}
-
-		
+				
 	}
 }

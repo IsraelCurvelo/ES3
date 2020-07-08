@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using CadastroProduto.Data.Exception;
 using CadastroProduto.Facade;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
-
+using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroProduto.Controllers
@@ -50,7 +51,7 @@ namespace CadastroProduto.Controllers
         {
             
             ClienteFacade cf = new ClienteFacade(dbContext);
-            cf.Cadastrar(cliente);
+            var conf = cf.Cadastrar(cliente);
 
             return RedirectToAction(nameof(Index));           
 
@@ -60,13 +61,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             ClienteFacade facade = new ClienteFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
             }
             return View(obj);
         }
@@ -85,13 +86,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             ClienteFacade facade = new ClienteFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
             }
             return View(obj);
         }
@@ -100,7 +101,7 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             ClienteFacade facade = new ClienteFacade(dbContext);
@@ -108,7 +109,7 @@ namespace CadastroProduto.Controllers
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
             }
 
             return View(obj);
@@ -121,7 +122,7 @@ namespace CadastroProduto.Controllers
 
             if (id != cliente.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Cliente selecionado para editar diferente do que está cadastrado" });
             }
 
             try
@@ -133,14 +134,21 @@ namespace CadastroProduto.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbException)
+           
+        }
+
+        public IActionResult Error(String message)
+        {
+            var viewModel = new ErrorViewModel
             {
-                return BadRequest();
-            }
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }

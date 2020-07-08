@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
@@ -48,8 +49,12 @@ namespace CadastroProduto.Controllers
         {
             
             ProdutoFacade cf = new ProdutoFacade(dbContext);
-            cf.Cadastrar(produto);
+            var conf = cf.Cadastrar(produto);
             
+            if (conf != null)
+            {
+                return RedirectToAction(nameof(Error), new { message = conf });
+            }
 
             return RedirectToAction("Create","Acessorios",produto.Linha);
         }
@@ -58,13 +63,13 @@ namespace CadastroProduto.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             ProdutoFacade facade = new ProdutoFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if(obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
             }
             return View(obj);
         }
@@ -83,13 +88,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             ProdutoFacade facade = new ProdutoFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
             }
             return View(obj);
         }
@@ -98,7 +103,7 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             ProdutoFacade facade = new ProdutoFacade(dbContext);
@@ -106,7 +111,7 @@ namespace CadastroProduto.Controllers
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
             }
 
             return View(obj);
@@ -119,7 +124,7 @@ namespace CadastroProduto.Controllers
 
             if (id != produto.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Produto escolhido pra editar não existe" });
             }
 
             try
@@ -128,20 +133,27 @@ namespace CadastroProduto.Controllers
                 facade.Alterar(produto);
                 return RedirectToAction("Index");
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbException)
-            {
-                return BadRequest();
-            }
+            
 
         }
 
         public IActionResult Consultar()
         {
             return View();
+        }
+
+        public IActionResult Error(String message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }

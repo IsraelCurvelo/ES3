@@ -16,10 +16,10 @@ namespace CadastroProduto.Strategy
                 || obj.Categoria.Descricao == null || obj.Categoria.SubCategoria.Descricao == null
                 || obj.Componente.Basico == null || obj.Componente.Primario == null || obj.Componente.Secundario == null)
             {
-                return null;
+                return "Erro nos dados digitados, * Campos obrigatório!";
             }
 
-            return "";
+            return null;
 
         }
     }

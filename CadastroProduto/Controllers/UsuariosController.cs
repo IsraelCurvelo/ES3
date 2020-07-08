@@ -47,7 +47,12 @@ namespace CadastroProduto.Controllers
         public IActionResult Create(Usuario usuario)
         {
             UsuarioFacade uf = new UsuarioFacade(dbContext);
-            uf.Cadastrar(usuario);
+            var conf = uf.Cadastrar(usuario);
+
+            if (conf != null)
+            {
+                return RedirectToAction(nameof(Error), new { message = conf});
+            }
 
             return RedirectToAction("Index", "Home");
 
@@ -57,15 +62,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                String erro = "Id não encontrado";
-                return RedirectToAction(nameof(Error), erro);
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             UsuarioFacade facade = new UsuarioFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                String erro = "Id não encontrado";
-                return RedirectToAction(nameof(Error), erro);
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             }
             return View(obj);
         }
@@ -84,15 +87,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                String erro = "Id não encontrado";
-                return RedirectToAction(nameof(Error),erro);
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             UsuarioFacade facade = new UsuarioFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                String erro = "Id não encontrado";
-                return RedirectToAction(nameof(Error), erro);
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             }
             return View(obj);
         }
@@ -101,8 +102,7 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                String erro = "Id não encontrado";
-                return RedirectToAction(nameof(Error), erro);
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
                 UsuarioFacade facade = new UsuarioFacade(dbContext);
@@ -110,8 +110,7 @@ namespace CadastroProduto.Controllers
 
             if (obj == null)
             {
-                String erro = "Id não encontrado";
-                return RedirectToAction(nameof(Error), erro);
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             }
 
             return View(obj);
@@ -124,7 +123,7 @@ namespace CadastroProduto.Controllers
 
             if(id != usuario.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             }
 
             try
@@ -133,14 +132,11 @@ namespace CadastroProduto.Controllers
                 facade.Alterar(usuario);
                 return RedirectToAction("Index");
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbException)
-            {
-                return BadRequest();
-            }
+            
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
@@ -10,6 +11,7 @@ using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace CadastroProduto.Controllers
 {
@@ -58,7 +60,13 @@ namespace CadastroProduto.Controllers
         {
             
             AcessorioFacade cf = new AcessorioFacade(dbContext);                  
-            cf.Cadastrar(acessorio);
+            var conf = cf.Cadastrar(acessorio);
+
+
+            if (conf != null)
+            {
+                return RedirectToAction(nameof(Error), new { message = conf });
+            }
 
             return RedirectToAction("Create", "Acessorios", acessorio.Linha);
           
@@ -69,13 +77,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             AcessorioFacade facade = new AcessorioFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
             }
             return View(obj);
         }
@@ -95,13 +103,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             AcessorioFacade facade = new AcessorioFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
             }
             return View(obj);
         }
@@ -109,8 +117,8 @@ namespace CadastroProduto.Controllers
         public IActionResult Edit(int? id)
         {
             if (id == null)
-            {
-                return NotFound();
+            {             
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             AcessorioFacade facade = new AcessorioFacade(dbContext);
@@ -118,7 +126,7 @@ namespace CadastroProduto.Controllers
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
             }
             
             LinhaFacade lf = new LinhaFacade(dbContext);
@@ -143,7 +151,7 @@ namespace CadastroProduto.Controllers
 
             if (id != acessorio.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Acessório escolhido para cadastrar diferente do cadastrado" });
             }
 
             try
@@ -152,14 +160,10 @@ namespace CadastroProduto.Controllers
                 facade.Alterar(acessorio);
                 return RedirectToAction("Index");
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
-            }
-            catch (DbException)
-            {
-                return BadRequest();
-            }
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }           
         }
 
 
@@ -177,6 +181,15 @@ namespace CadastroProduto.Controllers
         {
             return RedirectToAction("Create", "Linhas");
         }
-        
+
+        public IActionResult Error(String message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
+        }
     }
 }

@@ -19,20 +19,22 @@ namespace CadastroProduto.Facade
             this.dbContext = dbContext;
         }
 
-        public void Cadastrar(EntidadeDominio entidadeDominio)
+        public String Cadastrar(EntidadeDominio entidadeDominio)
         {
             ValidarDadosProduto validar = new ValidarDadosProduto();
             var conf = validar.Processar(entidadeDominio);
 
-            if (conf != null)
+            if (conf == null)
             {
                 ProdutoDAL pd = new ProdutoDAL(dbContext);
                 pd.Cadastrar(entidadeDominio);
                 GerarLog log = new GerarLog();
-                var logg = log.Processar(entidadeDominio);                
+                var logg = log.Processar(entidadeDominio);
+                return null;
 
-            }                    
-            
+            }
+
+            return conf;
 
         }
 
@@ -62,5 +64,7 @@ namespace CadastroProduto.Facade
             ProdutoDAL dal = new ProdutoDAL(dbContext);
             return dal.ConsultarId(id);
         }
+
+        
     }
 }

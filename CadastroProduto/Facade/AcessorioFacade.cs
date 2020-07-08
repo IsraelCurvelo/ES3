@@ -19,18 +19,19 @@ namespace CadastroProduto.Facade
             this.dbContext = dbContext;
         }
 
-        public void Cadastrar(EntidadeDominio entidadeDominio)
+        public String Cadastrar(EntidadeDominio entidadeDominio)
         {
             ValidarDadosAcessorio validar = new ValidarDadosAcessorio();
             var conf = validar.Processar(entidadeDominio);
-            if (conf != null)
+            if (conf == null)
             {
                 AcessorioDAL cd = new AcessorioDAL(dbContext);
                 cd.Cadastrar(entidadeDominio);
                 GerarLog log = new GerarLog();
                 log.Processar(entidadeDominio);
+                return null;
             }
-
+            return conf;
         }
 
         public void Alterar(EntidadeDominio entidadeDominio)

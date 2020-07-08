@@ -40,9 +40,9 @@ namespace CadastroProduto.Dal
                 dbContext.Update(entidadeDominio);                
                 dbContext.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (ApplicationException e)
             {
-                throw new DbException(e.Message);
+                throw new ApplicationException(e.Message);
             }
         }
 

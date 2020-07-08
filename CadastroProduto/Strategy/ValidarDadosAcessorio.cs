@@ -12,13 +12,13 @@ namespace CadastroProduto.Strategy
         {
             var obj = (Acessorio)entidadeDominio;
 
-            if (obj.Nome == null || obj.Quantidade == null || obj.Valor == null || obj.Descricao == null
-                || obj.Codigo == null || obj.Basico == null || obj.LinhaId == null)
+            if (obj.Nome == null || obj.Quantidade < 0 || obj.Valor < 0  || obj.Descricao == null
+                || obj.Codigo == null )
             {
-                return null;
+                return "Erro na digitação dos dados! *Dados Obrigatórios";
             }
 
-            return "";
+            return null;
 
         }
     }

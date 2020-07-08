@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
@@ -7,6 +8,7 @@ using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
 using CadastroProduto.Facade;
 using CadastroProduto.Models.Domain;
+using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroProduto.Controllers
@@ -45,7 +47,7 @@ namespace CadastroProduto.Controllers
         public IActionResult Create(Linha linha)
         {
            LinhaFacade lf = new LinhaFacade(dbContext);
-            lf.Cadastrar(linha);
+           var conf =  lf.Cadastrar(linha);
 
 
             return RedirectToAction("Create","Acessorios",linha);
@@ -56,13 +58,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
            LinhaFacade facade = new LinhaFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             }
             return View(obj);
         }
@@ -82,13 +84,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             LinhaFacade facade = new LinhaFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             }
             return View(obj);
         }
@@ -97,7 +99,7 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             LinhaFacade facade = new LinhaFacade(dbContext);
@@ -105,7 +107,7 @@ namespace CadastroProduto.Controllers
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             }
 
             return View(obj);
@@ -118,7 +120,7 @@ namespace CadastroProduto.Controllers
 
             if (id != linha.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Linha escolhida para editar diferente da cadastrada" });
             }
 
             try
@@ -127,14 +129,21 @@ namespace CadastroProduto.Controllers
                 facade.Alterar(linha);
                 return RedirectToAction("Index");
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbException)
+            
+        }
+
+        public IActionResult Error(String message)
+        {
+            var viewModel = new ErrorViewModel
             {
-                return BadRequest();
-            }
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }

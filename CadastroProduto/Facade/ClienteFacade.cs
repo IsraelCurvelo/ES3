@@ -2,6 +2,7 @@
 using CadastroProduto.Data;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
+using CadastroProduto.Strategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,14 @@ namespace CadastroProduto.Facade
             this.dbContext = dbContext;            
         }
 
-        public void Cadastrar(EntidadeDominio entidadeDominio)
+        public String Cadastrar(EntidadeDominio entidadeDominio)
         {
             
             ClienteDAL cd = new ClienteDAL(dbContext);
             cd.Cadastrar(entidadeDominio);
-            Log.Gerar(new Dictionary<string, string>());
+            GerarLog log = new GerarLog();
+            var res = log.Processar(entidadeDominio);
+            return null;
 
         }
 

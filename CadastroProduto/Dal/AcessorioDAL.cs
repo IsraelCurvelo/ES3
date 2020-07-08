@@ -29,7 +29,7 @@ namespace CadastroProduto.Dal
         {
             if (!dbContext.Acessorio.Any(x => x.Id == entidadeDominio.Id))
             {
-                throw new NotFoundException("Acessório não encontrado");
+                throw new ApplicationException("Acessório não encontrado");
             }
 
             try
@@ -37,9 +37,9 @@ namespace CadastroProduto.Dal
                 dbContext.Update(entidadeDominio);
                 dbContext.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (ApplicationException e)
             {
-                throw new DbException(e.Message);
+                throw new ApplicationException(e.Message);
             }
         }
 
@@ -64,9 +64,17 @@ namespace CadastroProduto.Dal
         public Acessorio ConsultarId(int id)
         {
 
-            return dbContext.Acessorio
+            var acessorio =  dbContext.Acessorio
                 .Include(x=>x.Linha )
                 .FirstOrDefault(x => x.Id == id);
+
+            if(acessorio == null)
+            {
+                return null;
+            }
+
+            return acessorio;
+
         }
     }
 }

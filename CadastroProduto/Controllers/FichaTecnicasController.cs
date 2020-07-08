@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CadastroProduto.Dal;
@@ -46,8 +47,11 @@ namespace CadastroProduto.Controllers
         public IActionResult Create(FichaTecnica fichaTecnica)
         {
             FichaTecnicaFacade cf = new FichaTecnicaFacade(dbContext);
-            cf.Cadastrar(fichaTecnica);
-
+            var conf = cf.Cadastrar(fichaTecnica);
+            if(conf != null)
+            {
+                return RedirectToAction(nameof(Error), new { message = conf });
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -55,13 +59,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
             }
             return View(obj);
         }
@@ -80,13 +84,13 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
             var obj = facade.ConsultarId(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
             }
             return View(obj);
         }
@@ -95,7 +99,7 @@ namespace CadastroProduto.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
@@ -103,7 +107,7 @@ namespace CadastroProduto.Controllers
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
             }
 
             return View(obj);
@@ -116,7 +120,7 @@ namespace CadastroProduto.Controllers
 
             if (id != fichaTecnica.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica selecionada diferente da que está cadastrada" });
             }
 
             try
@@ -125,14 +129,21 @@ namespace CadastroProduto.Controllers
                 facade.Alterar(fichaTecnica);
                 return RedirectToAction("Index");
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message});
             }
-            catch (DbException)
+            
+        }
+
+        public IActionResult Error(String message)
+        {
+            var viewModel = new ErrorViewModel
             {
-                return BadRequest();
-            }
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
 
     }

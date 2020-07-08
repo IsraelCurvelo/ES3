@@ -15,7 +15,7 @@ namespace CadastroProduto.Strategy
             
             if(usuario.Senha != usuario.ConfirmacaoSenha)
             {
-                throw new Exception("SENHAS DIFERENTES");
+                return "SENHAS DIFERENTES" ;
             }
             var input = usuario.Senha;
             var hasNumber = new Regex(@"[0-9]+");
@@ -28,10 +28,10 @@ namespace CadastroProduto.Strategy
             if (!hasLowerChar.IsMatch(input) || !hasUpperChar.IsMatch(input) || !hasMiniMaxChars.IsMatch(input) 
                 || !hasNumber.IsMatch(input) || !hasSymbols.IsMatch(input))
             {
-                throw new Exception("CARACTERES OBRIGATÓRIOS NÃO DIGITADOS");
+                return  "CARACTERES OBRIGATÓRIOS NÃO DIGITADOS" ;
             }                       
            
-                return "";            
+                return null;            
         }
     }
 }
