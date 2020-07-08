@@ -1,6 +1,7 @@
 ﻿using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
 using CadastroProduto.Models.Domain;
+using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace CadastroProduto.Dal
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
-            
+
             dbContext.Add(entidadeDominio);
             dbContext.SaveChanges();
         }
@@ -77,7 +78,7 @@ namespace CadastroProduto.Dal
                     .Include(obj => obj.Linha)
                     .FirstOrDefault(x => x.Id == id);
 
-                if(produto == null)
+                if (produto == null)
                 {
                     return null;
                 }
@@ -86,10 +87,114 @@ namespace CadastroProduto.Dal
                 produto.Linha = linha;
 
                 return produto;
-            }catch(ApplicationException e)
+            }
+            catch (ApplicationException e)
             {
                 throw new ApplicationException(e.Message);
             }
+        }
+
+        public ICollection<Produto> ConsultarFiltro(Produto produto)
+        {
+            HashSet<Produto> consulta = new HashSet<Produto>();
+
+
+            if (produto.Codigo != null)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Codigo == produto.Codigo).ToList();
+                foreach (Produto item in resultado)
+                {
+                    var prod = ConsultarId(item.Id);
+                    consulta.Add(prod);
+                }
+            }
+
+            if (produto.Nome != null)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Nome == produto.Nome).ToList();
+                
+                foreach (Produto item in resultado)
+                {
+                    var prod = ConsultarId(item.Id);
+                    consulta.Add(prod);
+                }
+            }
+
+            if (produto.Valor >= 0.0)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Valor == produto.Valor).ToList();
+                foreach (Produto item in resultado)
+                {
+                    var prod = ConsultarId(item.Id);
+                    consulta.Add(prod);
+                }
+            }
+
+            if (produto.DataEntrada != null)
+            {
+                var resultado = dbContext.Produto.Where(x => x.DataEntrada == produto.DataEntrada).ToList();
+                foreach (Produto item in resultado)
+                {
+                    var prod = ConsultarId(item.Id);
+                    consulta.Add(prod);
+                }
+            }
+
+            if (produto.Quantidade >= 0)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Quantidade == produto.Quantidade).ToList();
+                foreach (Produto item in resultado)
+                {
+                    var prod = ConsultarId(item.Id);
+                    consulta.Add(prod);
+                }
+            }
+
+            if (produto.Status)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Status == true).ToList();
+                foreach (Produto item in resultado)
+                {
+                    var prod = ConsultarId(item.Id);
+                    consulta.Add(prod);
+                }
+            }
+            else if(!produto.Status)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Status == false).ToList();
+                foreach (Produto item in resultado)
+                {
+                    var prod = ConsultarId(item.Id);
+                    consulta.Add(prod);
+                }
+
+            }           
+
+            
+
+            if (produto.FichaTecnica.Nome != null)
+            {
+                var resultado = dbContext.FichaTecnica.Where(x => x.Nome == produto.FichaTecnica.Nome).ToList();                
+                foreach (FichaTecnica item in resultado)
+                {
+                    Produto p = dbContext.Produto.Where(x => x.FichaTecnica.Id == item.Id).FirstOrDefault();
+                    var prod = ConsultarId(p.Id);
+                    consulta.Add(prod);
+                }
+            }
+
+            if (produto.Cliente.Nome != null)
+            {
+                var resultado = dbContext.Cliente.Where(x => x.Nome == produto.Cliente.Nome).ToList();
+                foreach (Cliente item in resultado)
+                {
+                    Produto p = dbContext.Produto.Where(x => x.Cliente.Id == item.Id).FirstOrDefault();
+                    var prod = ConsultarId(p.Id);
+                    consulta.Add(prod);
+                }
+            }
+
+            return consulta;
         }
     }
 }

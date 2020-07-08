@@ -1,0 +1,92 @@
+﻿@model IEnumerable<CadastroProduto.Models.Domain.Produto>
+@{
+    ViewData["Title"] = "Resultado da Busca";
+}
+
+<h2>@ViewData["Title"] </h2>
+
+
+    <a asp-action="Consultar"  class="btn btn-default">Voltar</a>
+    
+
+<hr />
+<table class="table table-striped table-hover">
+    <thread>
+        <tr class="info">
+
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataEntrada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FichaTecnica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+            <th></th>
+
+        </tr>
+    </thread>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Codigo)
+                </td>
+                <th>
+                    @Html.DisplayFor(model => item.Valor)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.DataEntrada)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.Quantidade)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.FichaTecnica.Nome)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.Cliente.Nome)
+                </th>
+                <td>
+                    @if (item.Status == true)
+                    {
+                        @Html.DisplayFor(modelItem => item.Status)
+                    }
+                    else
+                    {
+
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

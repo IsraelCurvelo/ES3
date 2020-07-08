@@ -6,17 +6,72 @@
 
 <h2>Consultar Produto</h2>
 <hr />
-<div class="row">
-    <div class="col-2">
-        <div class="form-group">
-            <label asp-for="Codigo" class="control-label"></label>
-            <input asp-for="Codigo" class="form-control" />
+<form asp-action="Consultar">
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="DataEntrada" class="control-label"></label>
+                <input asp-for="DataEntrada" class="form-control" />
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label asp-for="Quantidade" class="control-label"></label>
+                <input asp-for="Quantidade" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label">Ficha Técnica</label>
+                <input asp-for="FichaTecnica.Nome" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label">Cliente</label>
+                <input asp-for="Cliente.Nome" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div style=" margin-top: 25px;">
+                @Html.RadioButtonFor(m => Model.Status, true) Ativo
+
+            </div>
+            <div>
+                @Html.RadioButtonFor(m => Model.Status, false) Inativo
+            </div>
+            
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <input type="submit" value="Consultar" class="btn-sm btn-info " style=" margin-top: 32px; margin-left: -9px;" />
+            </div>
         </div>
     </div>
-    <div class="col-2">
-        <div class="form-group">
-            <label asp-for="Nome" class="control-label"></label>
-            <input asp-for="Nome" class="form-control" />
-        </div>
-    </div>
-</div>
+        
+</form>
+
+
+

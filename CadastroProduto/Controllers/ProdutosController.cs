@@ -146,6 +146,18 @@ namespace CadastroProduto.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Consultar(Produto produto)
+        {
+            ProdutoFacade facade = new ProdutoFacade(dbContext);
+            var prod = facade.ConsultarFiltro(produto);
+
+            return View("ResultadoFiltro",prod);           
+        }
+
+        
+
         public IActionResult Error(String message)
         {
             var viewModel = new ErrorViewModel

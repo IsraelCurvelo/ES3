@@ -81,6 +81,13 @@ namespace CadastroProduto.Facade
             return dal.ConsultarId(id);
         }
 
+        public ICollection<Produto> ConsultarFiltro(Produto produto)
+        {
+            ProdutoDAL dal = new ProdutoDAL(dbContext);
+            var prod = dal.ConsultarFiltro(produto);
+            return prod;
+        }
+
         
     }
 }
