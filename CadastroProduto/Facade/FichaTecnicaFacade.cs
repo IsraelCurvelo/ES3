@@ -29,8 +29,14 @@ namespace CadastroProduto.Facade
                 FichaTecnicaDAL ftd = new FichaTecnicaDAL(dbContext);
                 ftd.Cadastrar(entidadeDominio);
 
+                FichaTecnica ficha = (FichaTecnica)entidadeDominio;
+                Log classe = new Log();
                 GerarLog log = new GerarLog();
-                log.Processar(entidadeDominio);
+                classe.Descricao = log.Processar(entidadeDominio);
+                classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados da Ficha Técnica: " + ficha.Nome + ", " + ficha.Codigo + "]";
+
+                LogDAL dal = new LogDAL(dbContext);
+                dal.GerarLog(classe);
                 return null;
             }
             return conf;
@@ -41,6 +47,15 @@ namespace CadastroProduto.Facade
         {
             FichaTecnicaDAL dal = new FichaTecnicaDAL(dbContext);
             dal.Alterar(entidadeDominio);
+
+            FichaTecnica ficha = (FichaTecnica)entidadeDominio;
+            Log classe = new Log();
+            GerarLog log = new GerarLog();
+            classe.Descricao = log.Processar(entidadeDominio);
+            classe.Descricao = classe.Descricao + ", [Tipo: Alteração], [Dados da Ficha Técnica: " + ficha.Nome + ", " + ficha.Codigo + "]";
+
+            LogDAL logdal = new LogDAL(dbContext);
+            logdal.GerarLog(classe);
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)

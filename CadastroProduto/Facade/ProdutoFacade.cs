@@ -26,10 +26,17 @@ namespace CadastroProduto.Facade
 
             if (conf == null)
             {
+                Produto p = (Produto)entidadeDominio;
                 ProdutoDAL pd = new ProdutoDAL(dbContext);
                 pd.Cadastrar(entidadeDominio);
+                Log classe = new Log();
                 GerarLog log = new GerarLog();
-                var logg = log.Processar(entidadeDominio);
+                classe.Descricao = log.Processar(entidadeDominio);
+                classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados do produto: " +p.Nome + ", " + p.Codigo + ", " + p.DataEntrada + ", "
+                    + p.Quantidade + ", " + p.Status + ", " + p.Valor + ", " + p.Cliente.Nome + ", " + p.Linha.Nome+"]";
+
+                LogDAL dal = new LogDAL(dbContext);
+                dal.GerarLog(classe);
                 return null;
 
             }
@@ -40,8 +47,17 @@ namespace CadastroProduto.Facade
 
         public void Alterar(EntidadeDominio entidadeDominio)
         {
-            ProdutoDAL dal = new ProdutoDAL(dbContext);
-            dal.Alterar(entidadeDominio);
+            Produto p = (Produto)entidadeDominio;
+            ProdutoDAL pd = new ProdutoDAL(dbContext);
+            pd.Alterar(entidadeDominio);
+            Log classe = new Log();
+            GerarLog log = new GerarLog();
+            classe.Descricao = log.Processar(entidadeDominio);
+            classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados do produto: " + p.Nome + ", " + p.Codigo + ", " + p.DataEntrada + ", "
+                + p.Quantidade + ", " + p.Status + ", " + p.Valor + ", "  + "]";
+
+            LogDAL dal = new LogDAL(dbContext);
+            dal.GerarLog(classe);
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)

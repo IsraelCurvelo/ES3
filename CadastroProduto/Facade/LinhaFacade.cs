@@ -24,11 +24,19 @@ namespace CadastroProduto.Facade
         }
 
         public String Cadastrar(EntidadeDominio entidadeDominio)
-        {           
+        {
+           
             LinhaDAL ld = new LinhaDAL(dbContext);
-            ld.Cadastrar(entidadeDominio);
+            ld.Cadastrar(entidadeDominio);            
+            
+            Linha linha = (Linha)entidadeDominio;
+            Log classe = new Log();
             GerarLog log = new GerarLog();
-            var res = log.Processar(entidadeDominio);
+            classe.Descricao = log.Processar(entidadeDominio);
+            classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados da linha: " + linha.Nome + ", " + linha.Codigo + "]";
+
+            LogDAL dal = new LogDAL(dbContext);
+            dal.GerarLog(classe);
             return null;
         }
 
@@ -36,6 +44,15 @@ namespace CadastroProduto.Facade
         {
             LinhaDAL dal = new LinhaDAL(dbContext);
             dal.Alterar(entidadeDominio);
+
+            Linha linha = (Linha)entidadeDominio;
+            Log classe = new Log();
+            GerarLog log = new GerarLog();
+            classe.Descricao = log.Processar(entidadeDominio);
+            classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados da linha: " + linha.Nome + ", " + linha.Codigo + "]";
+
+            LogDAL ldal = new LogDAL(dbContext);
+            ldal.GerarLog(classe);
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)

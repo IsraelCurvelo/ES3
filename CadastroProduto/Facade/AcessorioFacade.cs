@@ -27,8 +27,16 @@ namespace CadastroProduto.Facade
             {
                 AcessorioDAL cd = new AcessorioDAL(dbContext);
                 cd.Cadastrar(entidadeDominio);
+
+                Acessorio acessorio = (Acessorio)entidadeDominio;
+                Log classe = new Log();
                 GerarLog log = new GerarLog();
-                log.Processar(entidadeDominio);
+                classe.Descricao = log.Processar(entidadeDominio);
+                classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados do cliente: " + acessorio.Nome + ", " + acessorio.Codigo + "]";
+
+                LogDAL dal = new LogDAL(dbContext);
+                dal.GerarLog(classe);
+
                 return null;
             }
             return conf;
@@ -38,6 +46,15 @@ namespace CadastroProduto.Facade
         {
             AcessorioDAL dal = new AcessorioDAL(dbContext);
             dal.Alterar(entidadeDominio);
+
+            Acessorio acessorio = (Acessorio)entidadeDominio;
+            Log classe = new Log();
+            GerarLog log = new GerarLog();
+            classe.Descricao = log.Processar(entidadeDominio);
+            classe.Descricao = classe.Descricao + ", [Tipo: Alteração], [Dados do cliente: " + acessorio.Nome + ", " + acessorio.Codigo + "]";
+
+            LogDAL logdal = new LogDAL(dbContext);
+            logdal.GerarLog(classe);
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)

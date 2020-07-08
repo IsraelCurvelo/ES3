@@ -24,8 +24,16 @@ namespace CadastroProduto.Facade
             
             ClienteDAL cd = new ClienteDAL(dbContext);
             cd.Cadastrar(entidadeDominio);
+
+            Cliente cliente = (Cliente)entidadeDominio;
+            Log classe = new Log();
             GerarLog log = new GerarLog();
-            var res = log.Processar(entidadeDominio);
+            classe.Descricao = log.Processar(entidadeDominio);
+            classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados do cliente: " + cliente.Nome + ", " + cliente.Cpf + "]";
+
+            LogDAL dal = new LogDAL(dbContext);
+            dal.GerarLog(classe);
+
             return null;
 
         }
@@ -34,6 +42,15 @@ namespace CadastroProduto.Facade
         {
             ClienteDAL dal = new ClienteDAL(dbContext);
             dal.Alterar(entidadeDominio);
+
+            Cliente cliente = (Cliente)entidadeDominio;
+            Log classe = new Log();
+            GerarLog log = new GerarLog();
+            classe.Descricao = log.Processar(entidadeDominio);
+            classe.Descricao = classe.Descricao + ", [Tipo: Alteração], [Dados do cliente: " + cliente.Nome + ", " + cliente.Cpf + "]";
+
+            LogDAL logdal = new LogDAL(dbContext);
+            logdal.GerarLog(classe);
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)

@@ -68,8 +68,7 @@ namespace CadastroProduto.Facade
                 Log classe = new Log();
                 GerarLog log = new GerarLog();
                 classe.Descricao = log.Processar(obj);
-                classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados do usuário: " + obj.Nome + ", " + obj.Email + "]";
-
+                classe.Descricao = classe.Descricao + ", [Tipo: Alteração], [Dados do usuário: " + obj.Nome + ", " + obj.Email + "]";
                 LogDAL dal = new LogDAL(dbContext);
                 dal.GerarLog(classe);
                 
