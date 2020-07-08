@@ -50,9 +50,10 @@ namespace CadastroProduto
             services.AddScoped<LinhaDAL>();
             services.AddScoped<ProdutoDAL>();
             services.AddScoped<AcessorioDAL>();
-            services.AddScoped<FichaTecnicaDAL>();       
-            
-           
+            services.AddScoped<FichaTecnicaDAL>();
+            services.AddScoped<LogDAL>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

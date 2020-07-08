@@ -26,8 +26,9 @@ namespace CadastroProduto.Data
         public DbSet<Linha> Linha { get; set; }
         public DbSet<Produto> Produto { get; set; }       
         public DbSet<Usuario> Usuario { get; set; }
-        public DbSet<Acessorio> Acessorio { get; set; }        
-       
+        public DbSet<Acessorio> Acessorio { get; set; }
+        public DbSet<Log> Log { get; set; }
+
 
     }
 }

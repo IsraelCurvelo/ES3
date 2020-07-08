@@ -1,14 +1,15 @@
-﻿using System;
+﻿using CadastroProduto.Models.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CadastroProduto.Models
 {
-    public class Log
+    public class Log : EntidadeDominio
     {
-		private String descricao;
+        public String Descricao { get; set; }
 
-				
-	}
+
+    }
 }

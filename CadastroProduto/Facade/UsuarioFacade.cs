@@ -35,9 +35,13 @@ namespace CadastroProduto.Facade
                 UsuarioDAL ud = new UsuarioDAL(dbContext);
                 ud.Cadastrar(obj);
 
+                Log classe = new Log();
                 GerarLog log = new GerarLog();
-                var resLog = log.Processar(obj);
-                
+                classe.Descricao = log.Processar(obj);
+                classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados do usuário: " + obj.Nome + ", " + obj.Email+"]";
+
+                LogDAL dal = new LogDAL(dbContext);
+                dal.GerarLog(classe);
                 return null;
             }
             return conf;
@@ -47,8 +51,29 @@ namespace CadastroProduto.Facade
         public void Alterar (EntidadeDominio entidadeDominio)
         {
 
-            UsuarioDAL dal = new UsuarioDAL(dbContext);
-            dal.Alterar(entidadeDominio);
+            var obj = (Usuario)entidadeDominio;
+            ValidarSenha vs = new ValidarSenha();
+            var conf = vs.Processar(entidadeDominio);
+
+            CriptografarSenha crip = new CriptografarSenha();
+            var senhacrip = crip.Processar(entidadeDominio);
+
+            obj.Senha = senhacrip;
+
+            if (conf == null && senhacrip != null)
+            {
+                UsuarioDAL ud = new UsuarioDAL(dbContext);
+                ud.Alterar(obj);
+
+                Log classe = new Log();
+                GerarLog log = new GerarLog();
+                classe.Descricao = log.Processar(obj);
+                classe.Descricao = classe.Descricao + ", [Tipo: Inserção], [Dados do usuário: " + obj.Nome + ", " + obj.Email + "]";
+
+                LogDAL dal = new LogDAL(dbContext);
+                dal.GerarLog(classe);
+                
+            }            
         }
 
         public void Excluir(EntidadeDominio entidadeDominio)
