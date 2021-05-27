@@ -33,6 +33,7 @@ namespace CadastroProduto.Models.Domain
         [Display(Name = "Básico?")]
         public bool Basico { get; set; }
         public Linha Linha { get; set; }
+        [Display(Name = "Linha")]
         public int LinhaId { get; set; }
 
         public Acessorio()

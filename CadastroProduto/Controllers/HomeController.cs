@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
 using Microsoft.EntityFrameworkCore;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Data;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
@@ -30,7 +30,6 @@ namespace CadastroProduto.Controllers
 
         public IActionResult IndexUsuario(Usuario usuario)
         {
-
             return View(usuario);
         }
 
@@ -46,7 +45,7 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Login(Usuario usuario)
         {
-            UsuarioFacade facade = new UsuarioFacade(dbContext);
+            Facade facade = new Facade(dbContext);
             var conf = facade.Login(usuario);
             if (conf )
             {

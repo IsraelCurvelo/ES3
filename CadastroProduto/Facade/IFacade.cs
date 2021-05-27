@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CadastroProduto.Facade
+namespace CadastroProduto.Fachada
 {
     public interface IFacade 
     {

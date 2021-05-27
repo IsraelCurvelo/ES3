@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
@@ -21,23 +21,21 @@ namespace CadastroProduto.Controllers
 
         public ClientesController(DataBaseContext dbContext)
         {
-            this.dbContext = dbContext;         
-
+            this.dbContext = dbContext;       
         }
 
         public IActionResult Index()
         {
             Cliente cliente = new Cliente();
-            ClienteFacade cf = new ClienteFacade(dbContext);
+            Facade facade = new Facade(dbContext);
 
             List<Cliente> resultado = new List<Cliente>();
-            foreach (EntidadeDominio x in cf.Consultar(cliente))
+            foreach (EntidadeDominio x in facade.Consultar(cliente))
             {
                 resultado.Add((Cliente)x);
             }
+            
             return View(resultado);
-
-
         }
 
         public IActionResult Create()
@@ -49,12 +47,10 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Cliente cliente)
         {
-            
-            ClienteFacade cf = new ClienteFacade(dbContext);
-            var conf = cf.Cadastrar(cliente);
+            Facade facade = new Facade(dbContext);
+            var conf = facade.Cadastrar(cliente);            
 
-            return RedirectToAction(nameof(Index));           
-
+            return RedirectToAction(nameof(Index));        
         }
 
         public IActionResult Delete(int? id)
@@ -63,8 +59,8 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            ClienteFacade facade = new ClienteFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Cliente(), id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
@@ -76,8 +72,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            ClienteFacade facade = new ClienteFacade(dbContext);
-            var obj = facade.ConsultarId(id);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Cliente(), id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }
@@ -88,8 +84,8 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            ClienteFacade facade = new ClienteFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Cliente(), id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
@@ -104,8 +100,8 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-            ClienteFacade facade = new ClienteFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Cliente(), id.Value);
 
             if (obj == null)
             {
@@ -119,7 +115,6 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Cliente cliente)
         {
-
             if (id != cliente.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Cliente selecionado para editar diferente do que está cadastrado" });
@@ -127,18 +122,15 @@ namespace CadastroProduto.Controllers
 
             try
             {
-                ClienteFacade facade = new ClienteFacade(dbContext);
-                facade.Alterar(cliente);           
-
-
+                Facade facade = new Facade(dbContext);
+                facade.Alterar(cliente);          
 
                 return RedirectToAction("Index");
             }
             catch (ApplicationException e)
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
-            }
-           
+            }           
         }
 
         public IActionResult Error(String message)

@@ -50,6 +50,19 @@ namespace CadastroProduto.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Log",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Descricao = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Log", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubCategoria",
                 columns: table => new
                 {
@@ -70,7 +83,7 @@ namespace CadastroProduto.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    Senha = table.Column<string>(maxLength: 20, nullable: false),
+                    Senha = table.Column<string>(maxLength: 50, nullable: false),
                     ConfirmacaoSenha = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -149,7 +162,7 @@ namespace CadastroProduto.Migrations
                     Numero = table.Column<string>(nullable: false),
                     Complemento = table.Column<string>(nullable: true),
                     Bairro = table.Column<string>(nullable: false),
-                    Cep = table.Column<string>(nullable: false),
+                    Cep = table.Column<string>(maxLength: 8, nullable: false),
                     CidadeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -226,7 +239,7 @@ namespace CadastroProduto.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(nullable: false),
-                    Cpf = table.Column<string>(nullable: false),
+                    Cpf = table.Column<string>(maxLength: 11, nullable: false),
                     EnderecoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -340,6 +353,9 @@ namespace CadastroProduto.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Acessorio");
+
+            migrationBuilder.DropTable(
+                name: "Log");
 
             migrationBuilder.DropTable(
                 name: "Produto");

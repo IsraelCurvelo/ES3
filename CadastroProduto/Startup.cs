@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using CadastroProduto.Data;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Dal;
 using CadastroProduto.Models.Domain;
 using System.Globalization;

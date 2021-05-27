@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,7 @@ namespace CadastroProduto.Controllers
 {
     public class LinhasController : Controller
     {
-        private readonly DataBaseContext dbContext;       
+        private readonly DataBaseContext dbContext;
 
         public LinhasController(DataBaseContext dbContext)
         {
@@ -24,21 +24,19 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Index()
         {
-            Linha linha = new Linha();            
-            LinhaFacade lf = new LinhaFacade(dbContext);
+            Linha linha = new Linha();
+            Facade facade = new Facade(dbContext);
 
             List<Linha> resultado = new List<Linha>();
-            foreach (EntidadeDominio x in lf.Consultar(linha))
+            foreach (EntidadeDominio x in facade.Consultar(linha))
             {
                 resultado.Add((Linha)x);
             }
             return View(resultado);
-
         }
 
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -46,12 +44,10 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Linha linha)
         {
-           LinhaFacade lf = new LinhaFacade(dbContext);
-           var conf =  lf.Cadastrar(linha);
+            Facade facade = new Facade(dbContext);            
+            var conf = facade.Cadastrar(linha);
 
-
-            return RedirectToAction("Create","Acessorios",linha);
-
+            return RedirectToAction("Create", "Acessorios", linha);
         }
 
         public IActionResult Delete(int? id)
@@ -60,8 +56,8 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-           LinhaFacade facade = new LinhaFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Linha(), id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
@@ -73,8 +69,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            LinhaFacade facade = new LinhaFacade(dbContext);
-            
+            Facade facade = new Facade(dbContext);
+
             var obj = facade.ConsultarRemover(id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
@@ -86,8 +82,9 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            LinhaFacade facade = new LinhaFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Linha(), id.Value);
+
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
@@ -102,8 +99,8 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-            LinhaFacade facade = new LinhaFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Linha(), id.Value);
 
             if (obj == null)
             {
@@ -125,7 +122,7 @@ namespace CadastroProduto.Controllers
 
             try
             {
-                LinhaFacade facade = new LinhaFacade(dbContext);
+                Facade facade = new Facade(dbContext);
                 facade.Alterar(linha);
                 return RedirectToAction("Index");
             }
@@ -133,7 +130,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            
+
         }
 
         public IActionResult Error(String message)

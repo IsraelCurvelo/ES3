@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace CadastroProduto.Controllers
     public class AcessoriosController : Controller
     {
         private readonly DataBaseContext dbContext;        
-        
+
         public AcessoriosController(DataBaseContext dbContext)
         {
             this.dbContext = dbContext;          
@@ -27,10 +27,10 @@ namespace CadastroProduto.Controllers
         public IActionResult Index()
         {
             Acessorio acessorio = new Acessorio();
-            AcessorioFacade abf = new AcessorioFacade(dbContext);
+            Facade facade = new Facade(dbContext);
 
             List<Acessorio> resultado = new List<Acessorio>();
-            foreach (EntidadeDominio x in abf.Consultar(acessorio))
+            foreach (EntidadeDominio x in facade.Consultar(acessorio))
             {
                 resultado.Add((Acessorio)x);
             }
@@ -39,17 +39,15 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Create(Linha linha)
         {
-            
-            LinhaFacade lf = new LinhaFacade(dbContext);           
+            Facade facade = new Facade(dbContext);
             List<Linha> resultado = new List<Linha>();
-            foreach (EntidadeDominio x in lf.Consultar(linha))
+            Facade facadeLinha = new Facade(dbContext);
+            foreach (EntidadeDominio x in facadeLinha.Consultar(linha))
             {
                 resultado.Add((Linha)x);
             }
-
             
             var viewModel = new AcessorioBasicoFormViewModel { Linhas = resultado };
-
             
             return View(viewModel);
         }
@@ -57,19 +55,16 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Acessorio acessorio)
-        {
-            
-            AcessorioFacade cf = new AcessorioFacade(dbContext);                  
-            var conf = cf.Cadastrar(acessorio);
-
+        {            
+            Facade facade = new Facade(dbContext);                              
+            var conf = facade.Cadastrar(acessorio);
 
             if (conf != null)
             {
                 return RedirectToAction(nameof(Error), new { message = conf });
             }
 
-            return RedirectToAction("Create", "Acessorios", acessorio.Linha);
-          
+            return RedirectToAction("Create", "Acessorios", acessorio.Linha);          
         }
 
 
@@ -78,13 +73,15 @@ namespace CadastroProduto.Controllers
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-            AcessorioFacade facade = new AcessorioFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            }     
+            
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Acessorio(), id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
             }
+
             return View(obj);
         }
 
@@ -92,8 +89,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            AcessorioFacade facade = new AcessorioFacade(dbContext);
-            var obj = facade.ConsultarId(id);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Acessorio(), id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }
@@ -105,12 +102,15 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            AcessorioFacade facade = new AcessorioFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Acessorio(), id.Value);
+
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
             }
+
             return View(obj);
         }
 
@@ -121,34 +121,30 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-            AcessorioFacade facade = new AcessorioFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = (Acessorio)facade.ConsultarId(new Acessorio(), id.Value);
 
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
-            }
+            }            
             
-            LinhaFacade lf = new LinhaFacade(dbContext);
             List<Linha> resultado = new List<Linha>();
-            foreach (EntidadeDominio x in lf.Consultar(obj.Linha))
+            Facade facadeLinha = new Facade(dbContext);
+            foreach (EntidadeDominio x in facadeLinha.Consultar(obj.Linha))
             {
                 resultado.Add((Linha)x);
             }
 
             var viewModel = new AcessorioBasicoFormViewModel { Acessorio = obj, Linhas = resultado };
 
-            return View(viewModel);         
-                   
-
-            
+            return View(viewModel);             
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Acessorio acessorio)
         {
-
             if (id != acessorio.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Acessório escolhido para cadastrar diferente do cadastrado" });
@@ -156,7 +152,7 @@ namespace CadastroProduto.Controllers
 
             try
             {
-                AcessorioFacade facade = new AcessorioFacade(dbContext);
+                Facade facade = new Facade(dbContext);
                 facade.Alterar(acessorio);
                 return RedirectToAction("Index");
             }
@@ -171,11 +167,9 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Sair()
         {
-            
-            return RedirectToAction("Index", "Produtos");
-        }       
+           return RedirectToAction("Index", "Produtos");
+        }      
 
-       
 
         public IActionResult CreateLinha()
         {

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+
 
 namespace CadastroProduto.Controllers
 {
@@ -26,10 +27,10 @@ namespace CadastroProduto.Controllers
         public IActionResult Index()
         {
             Usuario usuario = new Usuario();
-            UsuarioFacade uf = new UsuarioFacade(dbContext);
+            Facade facade = new Facade(dbContext);
 
             List<Usuario> resultado = new List<Usuario>();
-            foreach (EntidadeDominio x in uf.Consultar(usuario))
+            foreach (EntidadeDominio x in facade.Consultar(usuario))
             {
                 resultado.Add((Usuario)x);
             }
@@ -38,7 +39,6 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -46,16 +46,15 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Usuario usuario)
         {
-            UsuarioFacade uf = new UsuarioFacade(dbContext);
-            var conf = uf.Cadastrar(usuario);
-
+            Facade fachada = new Facade(dbContext);
+            var conf = fachada.Cadastrar(usuario);
+            
             if (conf != null)
             {
                 return RedirectToAction(nameof(Error), new { message = conf});
             }
 
             return RedirectToAction("Index", "Home");
-
         }
 
         public IActionResult Delete(int? id)
@@ -64,8 +63,10 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            UsuarioFacade facade = new UsuarioFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Usuario(), id.Value);
+
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
@@ -77,8 +78,9 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            UsuarioFacade facade = new UsuarioFacade(dbContext);
-            var obj = facade.ConsultarId(id);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Usuario(), id);
+
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }
@@ -89,8 +91,10 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            UsuarioFacade facade = new UsuarioFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Usuario(), id.Value);
+
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
@@ -105,8 +109,8 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-                UsuarioFacade facade = new UsuarioFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Usuario(), id.Value);
 
             if (obj == null)
             {
@@ -120,7 +124,6 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Usuario usuario)
         {
-
             if(id != usuario.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
@@ -128,18 +131,16 @@ namespace CadastroProduto.Controllers
 
             try
             {
-                UsuarioFacade facade = new UsuarioFacade(dbContext);
+                Facade facade = new Facade(dbContext);
                 facade.Alterar(usuario);
+
                 return RedirectToAction("Index");
             }
             catch (ApplicationException e)
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
-            }
-            
+            }            
         }
-
-
 
         public IActionResult Error(String message)
         {

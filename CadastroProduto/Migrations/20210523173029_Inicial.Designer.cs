@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CadastroProduto.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20200708013527_Log")]
-    partial class Log
+    [Migration("20210523173029_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -26,20 +26,18 @@ namespace CadastroProduto.Controllers
         {
             
             Produto produto = new Produto();
-            ProdutoFacade uf = new ProdutoFacade(dbContext);
+            Facade facade = new Facade(dbContext);
 
             List<Produto> resultado = new List<Produto>();
-            foreach (EntidadeDominio x in uf.Consultar(produto))
+            foreach (EntidadeDominio x in facade.Consultar(produto))
             {
                 resultado.Add((Produto)x);
             }
-            return View(resultado);           
-         
+            return View(resultado);         
         }
 
         public IActionResult Create()
-        {
-           
+        {           
             return View();
         }
 
@@ -47,9 +45,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Produto produto)
         {
-            
-            ProdutoFacade cf = new ProdutoFacade(dbContext);
-            var conf = cf.Cadastrar(produto);
+            Facade facade = new Facade(dbContext);           
+            var conf = facade.Cadastrar(produto);
             
             if (conf != null)
             {
@@ -65,8 +62,8 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            ProdutoFacade facade = new ProdutoFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Produto(), id.Value);
             if(obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
@@ -78,8 +75,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete (int id)
         {
-            ProdutoFacade facade = new ProdutoFacade(dbContext);
-            var obj = facade.ConsultarId(id);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Produto(), id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }
@@ -90,8 +87,10 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            ProdutoFacade facade = new ProdutoFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Produto(), id.Value);
+
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
@@ -106,8 +105,8 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-            ProdutoFacade facade = new ProdutoFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new Produto(), id.Value);
 
             if (obj == null)
             {
@@ -129,16 +128,15 @@ namespace CadastroProduto.Controllers
 
             try
             {
-                ProdutoFacade facade = new ProdutoFacade(dbContext);
+                Facade facade = new Facade(dbContext);
                 facade.Alterar(produto);
+
                 return RedirectToAction("Index");
             }
             catch (ApplicationException e)
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
-            }
-            
-
+            }            
         }
 
         public IActionResult Consultar()
@@ -150,13 +148,11 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Consultar(Produto produto)
         {
-            ProdutoFacade facade = new ProdutoFacade(dbContext);
+            Facade facade = new Facade(dbContext);
             var prod = facade.ConsultarFiltro(produto);
 
             return View("ResultadoFiltro",prod);           
-        }
-
-        
+        }        
 
         public IActionResult Error(String message)
         {

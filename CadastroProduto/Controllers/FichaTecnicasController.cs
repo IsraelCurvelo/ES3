@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CadastroProduto.Dal;
 using CadastroProduto.Data;
 using CadastroProduto.Data.Exception;
-using CadastroProduto.Facade;
+using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +25,10 @@ namespace CadastroProduto.Controllers
         public IActionResult Index()
         {
             FichaTecnica fichaTecnica = new FichaTecnica();
-            FichaTecnicaFacade cf = new FichaTecnicaFacade(dbContext);
+            Facade facade = new Facade(dbContext);
 
             List<FichaTecnica> resultado = new List<FichaTecnica>();
-            foreach (EntidadeDominio x in cf.Consultar(fichaTecnica))
+            foreach (EntidadeDominio x in facade.Consultar(fichaTecnica))
             {
                 resultado.Add((FichaTecnica)x);
             }
@@ -36,9 +36,7 @@ namespace CadastroProduto.Controllers
         }
 
         public IActionResult Create()
-        {
-            
-           
+        {   
             return View();
         }
 
@@ -46,8 +44,9 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(FichaTecnica fichaTecnica)
         {
-            FichaTecnicaFacade cf = new FichaTecnicaFacade(dbContext);
-            var conf = cf.Cadastrar(fichaTecnica);
+            Facade facade = new Facade(dbContext);            
+            var conf = facade.Cadastrar(fichaTecnica);
+
             if(conf != null)
             {
                 return RedirectToAction(nameof(Error), new { message = conf });
@@ -61,8 +60,9 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
+
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
@@ -74,8 +74,9 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
-            var obj = facade.ConsultarId(id);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new FichaTecnica(), id);
+
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }
@@ -86,8 +87,8 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
@@ -102,8 +103,8 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-            FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
-            var obj = facade.ConsultarId(id.Value);
+            Facade facade = new Facade(dbContext);
+            var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
 
             if (obj == null)
             {
@@ -125,15 +126,14 @@ namespace CadastroProduto.Controllers
 
             try
             {
-                FichaTecnicaFacade facade = new FichaTecnicaFacade(dbContext);
+                Facade facade = new Facade(dbContext);
                 facade.Alterar(fichaTecnica);
                 return RedirectToAction("Index");
             }
             catch (ApplicationException e)
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message});
-            }
-            
+            }            
         }
 
         public IActionResult Error(String message)
@@ -145,6 +145,5 @@ namespace CadastroProduto.Controllers
             };
             return View(viewModel);
         }
-
     }
 }
