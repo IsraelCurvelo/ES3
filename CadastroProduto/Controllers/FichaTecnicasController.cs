@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using CadastroProduto.Dal;
 using CadastroProduto.Data;
-using CadastroProduto.Data.Exception;
 using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
@@ -16,16 +12,17 @@ namespace CadastroProduto.Controllers
     public class FichaTecnicasController : Controller
     {
         private readonly DataBaseContext dbContext;
-        
+        private readonly Facade facade;
+
         public FichaTecnicasController(DataBaseContext dbContext)
         {
             this.dbContext = dbContext;
+            facade = new Facade(dbContext);
         }
 
         public IActionResult Index()
         {
-            FichaTecnica fichaTecnica = new FichaTecnica();
-            Facade facade = new Facade(dbContext);
+            FichaTecnica fichaTecnica = new FichaTecnica();           
 
             List<FichaTecnica> resultado = new List<FichaTecnica>();
             foreach (EntidadeDominio x in facade.Consultar(fichaTecnica))
@@ -43,8 +40,7 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(FichaTecnica fichaTecnica)
-        {
-            Facade facade = new Facade(dbContext);            
+        {                      
             var conf = facade.Cadastrar(fichaTecnica);
 
             if(conf != null)
@@ -60,7 +56,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            Facade facade = new Facade(dbContext);
+            
             var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
 
             if (obj == null)
@@ -73,8 +69,7 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
-        {
-            Facade facade = new Facade(dbContext);
+        {           
             var obj = facade.ConsultarId(new FichaTecnica(), id);
 
             facade.Excluir(obj);
@@ -87,7 +82,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            Facade facade = new Facade(dbContext);
+            
             var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
             if (obj == null)
             {
@@ -102,8 +97,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-
-            Facade facade = new Facade(dbContext);
+           
             var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
 
             if (obj == null)
@@ -125,8 +119,7 @@ namespace CadastroProduto.Controllers
             }
 
             try
-            {
-                Facade facade = new Facade(dbContext);
+            {                
                 facade.Alterar(fichaTecnica);
                 return RedirectToAction("Index");
             }

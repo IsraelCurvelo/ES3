@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using CadastroProduto.Dal;
 using CadastroProduto.Data;
-using CadastroProduto.Data.Exception;
 using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
@@ -16,16 +12,17 @@ namespace CadastroProduto.Controllers
     public class LinhasController : Controller
     {
         private readonly DataBaseContext dbContext;
+        private readonly Facade facade;
 
         public LinhasController(DataBaseContext dbContext)
         {
             this.dbContext = dbContext;
+            facade = new Facade(dbContext);
         }
 
         public IActionResult Index()
         {
-            Linha linha = new Linha();
-            Facade facade = new Facade(dbContext);
+            Linha linha = new Linha();            
 
             List<Linha> resultado = new List<Linha>();
             foreach (EntidadeDominio x in facade.Consultar(linha))
@@ -43,10 +40,8 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Linha linha)
-        {
-            Facade facade = new Facade(dbContext);            
+        {                    
             var conf = facade.Cadastrar(linha);
-
             return RedirectToAction("Create", "Acessorios", linha);
         }
 
@@ -56,7 +51,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            Facade facade = new Facade(dbContext);
+            
             var obj = facade.ConsultarId(new Linha(), id.Value);
             if (obj == null)
             {
@@ -68,9 +63,7 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
-        {
-            Facade facade = new Facade(dbContext);
-
+        {     
             var obj = facade.ConsultarRemover(id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
@@ -82,7 +75,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            Facade facade = new Facade(dbContext);
+            
             var obj = facade.ConsultarId(new Linha(), id.Value);
 
             if (obj == null)
@@ -98,8 +91,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-
-            Facade facade = new Facade(dbContext);
+            
             var obj = facade.ConsultarId(new Linha(), id.Value);
 
             if (obj == null)
@@ -121,8 +113,7 @@ namespace CadastroProduto.Controllers
             }
 
             try
-            {
-                Facade facade = new Facade(dbContext);
+            {               
                 facade.Alterar(linha);
                 return RedirectToAction("Index");
             }
@@ -130,7 +121,6 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-
         }
 
         public IActionResult Error(String message)

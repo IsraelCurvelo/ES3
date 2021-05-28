@@ -1,33 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using CadastroProduto.Dal;
 using CadastroProduto.Data;
-using CadastroProduto.Data.Exception;
 using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace CadastroProduto.Controllers
 {
     public class AcessoriosController : Controller
     {
-        private readonly DataBaseContext dbContext;        
+        private readonly DataBaseContext dbContext;
+        private readonly Facade facade;
 
         public AcessoriosController(DataBaseContext dbContext)
         {
-            this.dbContext = dbContext;          
+            this.dbContext = dbContext;
+            facade = new Facade(dbContext);            
         }
 
         public IActionResult Index()
         {
-            Acessorio acessorio = new Acessorio();
-            Facade facade = new Facade(dbContext);
+            Acessorio acessorio = new Acessorio();           
 
             List<Acessorio> resultado = new List<Acessorio>();
             foreach (EntidadeDominio x in facade.Consultar(acessorio))
@@ -39,10 +34,8 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Create(Linha linha)
         {
-            Facade facade = new Facade(dbContext);
-            List<Linha> resultado = new List<Linha>();
-            Facade facadeLinha = new Facade(dbContext);
-            foreach (EntidadeDominio x in facadeLinha.Consultar(linha))
+            List<Linha> resultado = new List<Linha>();            
+            foreach (EntidadeDominio x in facade.Consultar(linha))
             {
                 resultado.Add((Linha)x);
             }
@@ -55,9 +48,8 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Acessorio acessorio)
-        {            
-            Facade facade = new Facade(dbContext);                              
-            var conf = facade.Cadastrar(acessorio);
+        {         
+          var conf = facade.Cadastrar(acessorio);
 
             if (conf != null)
             {
@@ -73,9 +65,8 @@ namespace CadastroProduto.Controllers
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }     
-            
-            Facade facade = new Facade(dbContext);
+            }   
+                        
             var obj = facade.ConsultarId(new Acessorio(), id.Value);
             if (obj == null)
             {
@@ -88,8 +79,7 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
-        {
-            Facade facade = new Facade(dbContext);
+        {            
             var obj = facade.ConsultarId(new Acessorio(), id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
@@ -102,8 +92,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-
-            Facade facade = new Facade(dbContext);
+            
             var obj = facade.ConsultarId(new Acessorio(), id.Value);
 
             if (obj == null)
@@ -120,8 +109,7 @@ namespace CadastroProduto.Controllers
             {             
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-
-            Facade facade = new Facade(dbContext);
+           
             var obj = (Acessorio)facade.ConsultarId(new Acessorio(), id.Value);
 
             if (obj == null)
@@ -130,8 +118,8 @@ namespace CadastroProduto.Controllers
             }            
             
             List<Linha> resultado = new List<Linha>();
-            Facade facadeLinha = new Facade(dbContext);
-            foreach (EntidadeDominio x in facadeLinha.Consultar(obj.Linha))
+            
+            foreach (EntidadeDominio x in facade.Consultar(obj.Linha))
             {
                 resultado.Add((Linha)x);
             }
@@ -151,8 +139,7 @@ namespace CadastroProduto.Controllers
             }
 
             try
-            {
-                Facade facade = new Facade(dbContext);
+            {                
                 facade.Alterar(acessorio);
                 return RedirectToAction("Index");
             }

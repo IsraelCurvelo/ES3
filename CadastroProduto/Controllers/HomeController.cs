@@ -1,26 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
-using Microsoft.EntityFrameworkCore;
 using CadastroProduto.Fachada;
 using CadastroProduto.Data;
 using CadastroProduto.Models.ViewModels;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace CadastroProduto.Controllers
 {
     public class HomeController : Controller
     {
         private readonly DataBaseContext dbContext;
+        private readonly Facade facade;
 
         public HomeController(DataBaseContext dbContext)
         {
             this.dbContext = dbContext;
+            facade = new Facade(dbContext);
         }
 
         public IActionResult Index()
@@ -44,8 +40,7 @@ namespace CadastroProduto.Controllers
         }
 
         public IActionResult Login(Usuario usuario)
-        {
-            Facade facade = new Facade(dbContext);
+        {           
             var conf = facade.Login(usuario);
             if (conf )
             {
@@ -54,9 +49,7 @@ namespace CadastroProduto.Controllers
             }
 
             return RedirectToAction("Error","Home",new  { message = "Email ou senha incorreto!"});
-        }
-
-       
+        }            
 
         public IActionResult Error(String message)
         {

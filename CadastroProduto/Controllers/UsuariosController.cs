@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using CadastroProduto.Dal;
 using CadastroProduto.Data;
-using CadastroProduto.Data.Exception;
 using CadastroProduto.Fachada;
 using CadastroProduto.Models.Domain;
 using CadastroProduto.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 
 namespace CadastroProduto.Controllers
@@ -18,16 +13,17 @@ namespace CadastroProduto.Controllers
     public class UsuariosController : Controller
     {
         private readonly DataBaseContext dbContext;
+        private readonly Facade facade;
 
         public UsuariosController(DataBaseContext dbContext)
         {
             this.dbContext = dbContext;
+            facade = new Facade(dbContext);
         }
 
         public IActionResult Index()
         {
-            Usuario usuario = new Usuario();
-            Facade facade = new Facade(dbContext);
+            Usuario usuario = new Usuario();            
 
             List<Usuario> resultado = new List<Usuario>();
             foreach (EntidadeDominio x in facade.Consultar(usuario))
@@ -45,9 +41,8 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Usuario usuario)
-        {
-            Facade fachada = new Facade(dbContext);
-            var conf = fachada.Cadastrar(usuario);
+        {            
+            var conf = facade.Cadastrar(usuario);
             
             if (conf != null)
             {
@@ -64,7 +59,6 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-            Facade facade = new Facade(dbContext);
             var obj = facade.ConsultarId(new Usuario(), id.Value);
 
             if (obj == null)
@@ -77,10 +71,8 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
-        {
-            Facade facade = new Facade(dbContext);
+        {            
             var obj = facade.ConsultarId(new Usuario(), id);
-
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }
@@ -91,8 +83,7 @@ namespace CadastroProduto.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-
-            Facade facade = new Facade(dbContext);
+            
             var obj = facade.ConsultarId(new Usuario(), id.Value);
 
             if (obj == null)
@@ -109,7 +100,6 @@ namespace CadastroProduto.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
-            Facade facade = new Facade(dbContext);
             var obj = facade.ConsultarId(new Usuario(), id.Value);
 
             if (obj == null)
@@ -131,9 +121,7 @@ namespace CadastroProduto.Controllers
 
             try
             {
-                Facade facade = new Facade(dbContext);
                 facade.Alterar(usuario);
-
                 return RedirectToAction("Index");
             }
             catch (ApplicationException e)
