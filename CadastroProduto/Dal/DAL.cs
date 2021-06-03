@@ -100,7 +100,6 @@ namespace CadastroProduto.Dal
             var acessorio = dbContext.Acessorio
                 .Include(x => x.Linha)
                 .FirstOrDefault(x => x.Id == id);
-
             if (acessorio != null) return acessorio; 
             else return null;
           
@@ -110,6 +109,7 @@ namespace CadastroProduto.Dal
         {            
             dbContext.Add(log);
             dbContext.SaveChanges();
+
         }
 
     }
