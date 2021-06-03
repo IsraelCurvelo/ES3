@@ -41,7 +41,7 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Usuario usuario)
-        {            
+        {          
             var conf = facade.Cadastrar(usuario);
             
             if (conf != null)

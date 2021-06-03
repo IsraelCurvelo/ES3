@@ -21,7 +21,7 @@ namespace CadastroProduto.Data
 
          
       
-        public DbSet<Cliente> Cliente { get; set; }       
+        public DbSet<Cliente> Cliente { get; set; }                
         public DbSet<FichaTecnica> FichaTecnica { get; set; }       
         public DbSet<Linha> Linha { get; set; }
         public DbSet<Produto> Produto { get; set; }       

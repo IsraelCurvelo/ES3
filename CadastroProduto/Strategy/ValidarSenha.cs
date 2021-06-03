@@ -1,9 +1,6 @@
 ﻿using CadastroProduto.Models.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Strategy
 {
@@ -11,12 +8,12 @@ namespace CadastroProduto.Strategy
     {
         public String Processar(EntidadeDominio entidadeDominio)
         {
-            var usuario = (Usuario)entidadeDominio;
+            if (!entidadeDominio.GetType().Name.Equals("usuario")) return "Objeto diferente do esperado";
+
+            Usuario usuario = (Usuario)entidadeDominio;
             
-            if(usuario.Senha != usuario.ConfirmacaoSenha)
-            {
-                return "SENHAS DIFERENTES" ;
-            }
+            if(usuario.Senha != usuario.ConfirmacaoSenha) return "SENHAS DIFERENTES";    
+          
             var input = usuario.Senha;
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
@@ -26,12 +23,10 @@ namespace CadastroProduto.Strategy
 
 
             if (!hasLowerChar.IsMatch(input) || !hasUpperChar.IsMatch(input) || !hasMiniMaxChars.IsMatch(input) 
-                || !hasNumber.IsMatch(input) || !hasSymbols.IsMatch(input))
-            {
-                return  "CARACTERES OBRIGATÓRIOS NÃO DIGITADOS" ;
-            }                       
+                || !hasNumber.IsMatch(input) || !hasSymbols.IsMatch(input))            
+                        return  "CARACTERES OBRIGATÓRIOS NÃO DIGITADOS" ;                              
            
-                return null;            
+            return null;            
         }
     }
 }

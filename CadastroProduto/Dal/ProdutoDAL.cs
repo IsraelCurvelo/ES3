@@ -58,7 +58,6 @@ namespace CadastroProduto.Dal
             {
                 resultado.Add(x);
             }
-
             return resultado;
         }
 

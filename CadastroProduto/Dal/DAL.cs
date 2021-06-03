@@ -1,24 +1,20 @@
 ﻿using CadastroProduto.Data;
-using CadastroProduto.Data.Exception;
 using CadastroProduto.Models;
 using CadastroProduto.Models.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Dal
 {
     public class DAL : IDAL
     {
-        private readonly DataBaseContext dbContext;
+        protected readonly DataBaseContext dbContext;
         public DAL(DataBaseContext dbContext)
         {
             this.dbContext = dbContext;
-        }
+        }        
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
@@ -32,7 +28,6 @@ namespace CadastroProduto.Dal
             {
                 throw new ApplicationException("Objeto não encontrado");
             }
-
             try
             {
                 dbContext.Update(entidadeDominio);
@@ -52,32 +47,70 @@ namespace CadastroProduto.Dal
 
         public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
         {
-            var list = dbContext.Acessorio.ToList();
             List<EntidadeDominio> resultado = new List<EntidadeDominio>();
-            foreach (EntidadeDominio x in list)
-            {
-                resultado.Add(x);
-            }
 
-            return resultado;
+            switch (entidadeDominio.GetType().Name.ToLower())
+            {
+                case ("acessorio"):                   
+                    foreach (EntidadeDominio x in dbContext.Acessorio.ToList())
+                    {
+                        resultado.Add(x);
+                    }
+                    return resultado;
+                    
+                case ("usuario"):                   
+                    foreach (EntidadeDominio x in dbContext.Usuario.ToList())
+                    {
+                        resultado.Add(x);
+                    }
+                    return resultado;   
+
+                case ("cliente"):                   
+                    foreach (EntidadeDominio x in dbContext.Cliente.ToList())
+                    {
+                        resultado.Add(x);
+                    }
+                    return resultado;  
+                case ("produto"):                   
+                    foreach (EntidadeDominio x in dbContext.Produto.ToList())
+                    {
+                        resultado.Add(x);
+                    }
+                    return resultado; 
+                case ("linha"):                   
+                    foreach (EntidadeDominio x in dbContext.Linha.ToList())
+                    {
+                        resultado.Add(x);
+                    }
+                    return resultado;    
+                case ("fichatecnica"):                   
+                    foreach (EntidadeDominio x in dbContext.FichaTecnica.ToList())
+                    {
+                        resultado.Add(x);
+                    }
+                    return resultado;
+                default: 
+                    return null;
+            }           
         }
 
-        public Acessorio ConsultarId(int id)
+        public EntidadeDominio ConsultarId(int id)
         {
 
             var acessorio = dbContext.Acessorio
                 .Include(x => x.Linha)
                 .FirstOrDefault(x => x.Id == id);
 
-            if (acessorio == null)
-            {
-                return null;
-            }
-
-            return acessorio;
-
+            if (acessorio != null) return acessorio; 
+            else return null;
+          
         }
 
+        public void GerarLog(Log log)
+        {            
+            dbContext.Add(log);
+            dbContext.SaveChanges();
+        }
 
     }
 }

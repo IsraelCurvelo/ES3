@@ -11,59 +11,13 @@ using System.Threading.Tasks;
 
 namespace CadastroProduto.Dal
 {
-    public class UsuarioDAL :IDAL
+    public class UsuarioDAL : DAL
     {
-       private readonly DataBaseContext dbContext;
-       
-        public UsuarioDAL(DataBaseContext dbContext)
+              
+        public UsuarioDAL(DataBaseContext dbContext) : base(dbContext)
         {
-            this.dbContext = dbContext;
-        }
-
-        public void Cadastrar(EntidadeDominio entidadeDominio)
-        {            
-                dbContext.Add(entidadeDominio);
-                dbContext.SaveChanges();            
-        }
-
-        public void Alterar(EntidadeDominio entidadeDominio)
-        {
-            if (!dbContext.Usuario.Any(x => x.Id == entidadeDominio.Id))
-            {
-                throw new NotFoundException("Usuário não encontrado");
-            }
-
-            try
-            {
-                dbContext.Update(entidadeDominio);
-                dbContext.SaveChanges();
-            }catch(DbUpdateConcurrencyException e)
-            {
-                throw new DbException(e.Message);
-            }
-        }
-
-        public void Excluir(EntidadeDominio entidadeDominio)
-        {
-            
-
-            dbContext.Remove(entidadeDominio);
-            dbContext.SaveChanges();
-        }
-
-        public List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio)
-        {
-            
-            var list = dbContext.Usuario.ToList();
-            List<EntidadeDominio> resultado = new List<EntidadeDominio>();
-            foreach (EntidadeDominio x in list)
-            {
-                resultado.Add(x);
-            }
-
-            return resultado;
-
-        }
+           
+        }       
 
         public Usuario ConsultarId(int id)
         {
@@ -91,7 +45,7 @@ namespace CadastroProduto.Dal
                 return true;
             }            
                 
-            return false; ;
+            return false; 
            
         }
     }

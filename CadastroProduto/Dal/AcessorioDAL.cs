@@ -18,11 +18,9 @@ namespace CadastroProduto.Dal
         }
 
         public void Cadastrar(EntidadeDominio entidadeDominio)
-        {
-           
-                dbContext.Add(entidadeDominio);
-                dbContext.SaveChanges();
-            
+        {           
+            dbContext.Add(entidadeDominio);
+            dbContext.SaveChanges();         
         }
 
         public void Alterar(EntidadeDominio entidadeDominio)

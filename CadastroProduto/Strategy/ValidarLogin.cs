@@ -2,9 +2,6 @@
 using CadastroProduto.Data;
 using CadastroProduto.Models.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Strategy
 {
@@ -12,21 +9,20 @@ namespace CadastroProduto.Strategy
     {
         public String Processar(EntidadeDominio entidadeDominio)
         {
-            var obj = (Usuario)entidadeDominio;
+            if (!entidadeDominio.GetType().Name.Equals("usuario")) return "Objeto diferente do esperado";
 
-            CriptografarSenha crip = new CriptografarSenha();
-            var s = crip.Processar(obj);
+            Usuario usuario = (Usuario)entidadeDominio;
 
+            CriptografarSenha criptografarSenha = new CriptografarSenha();
+            string confirmacao = criptografarSenha.Processar(usuario);
+
+
+            //REFATORAR *********************************************************
             UsuarioDAL dal = new UsuarioDAL(new DataBaseContext());
-            var usuarioBanco = dal.ConsultarId(obj.Id);
+            Usuario usuarioBanco = dal.ConsultarId(usuario.Id);
 
-            if(obj.Email != usuarioBanco.Email || obj.Senha != usuarioBanco.Senha)
-            {
-                return null;
-            }
-
-            return "";
-
+            if(usuario.Email != usuarioBanco.Email || usuario.Senha != usuarioBanco.Senha) return null;          
+            else return "";
         }
     }
 }

@@ -1,25 +1,20 @@
 ﻿using CadastroProduto.Models.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Strategy
 {
-    public class ValidarDadosAcessorio :IStrategy
+    public class ValidarDadosAcessorio : IStrategy
     {
         public String Processar(EntidadeDominio entidadeDominio)
         {
-            var obj = (Acessorio)entidadeDominio;
+            if (!entidadeDominio.GetType().Name.ToLower().Equals("acessorio")) return "Objeto diferente do esperado";
 
-            if (obj.Nome == null || obj.Quantidade < 0 || obj.Valor < 0  || obj.Descricao == null
-                || obj.Codigo == null )
-            {
-                return "Erro na digitação dos dados! *Dados Obrigatórios";
-            }
+            Acessorio acessorio = (Acessorio)entidadeDominio;
 
-            return null;
-
+            if (acessorio.Nome == null || acessorio.Quantidade < 0 || acessorio.Valor < 0  || acessorio.Descricao == null || acessorio.Codigo == null )            
+                return "Erro na digitação dos dados! *Dados Obrigatórios";         
+            else
+                return null;
         }
     }
 }

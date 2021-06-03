@@ -39,24 +39,7 @@ namespace CadastroProduto.Models.Domain
             Nome = nome;
             Email = email;
             Senha = senha;
-        }
-
-        public void CriptografarSenha()
-        {
-
-        }
-
-        public void ValidarLogin()
-        {
-
-        }
-
-        public void ValidarSenha()
-        {
-
-        }
-
-
+        }   
 
     }
 }

@@ -7,7 +7,7 @@ namespace CadastroProduto.Fachada
     public interface IFacade 
     {
         String Cadastrar(EntidadeDominio entidadeDominio);
-        void Alterar(EntidadeDominio entidadeDominio);
+        String Alterar(EntidadeDominio entidadeDominio);
         void Excluir(EntidadeDominio entidadeDominio);
         List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio);
     }

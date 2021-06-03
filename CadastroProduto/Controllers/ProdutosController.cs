@@ -69,8 +69,8 @@ namespace CadastroProduto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete (int id)
-        {            
-            var obj = facade.ConsultarId(new Produto(), id);
+        {                       
+            var obj = facade.ConsultarId(new Produto() { Id = id}, id);
             facade.Excluir(obj);
             return RedirectToAction("Index");
         }

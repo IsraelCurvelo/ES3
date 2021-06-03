@@ -1,8 +1,5 @@
 ﻿using CadastroProduto.Models.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Strategy
 {
@@ -10,17 +7,16 @@ namespace CadastroProduto.Strategy
     {
         public String Processar(EntidadeDominio entidadeDominio)
         {
-            var obj = (FichaTecnica)entidadeDominio;
+            if (!entidadeDominio.GetType().Name.ToLower().Equals("fichatecnica")) return "Objeto diferente do esperado";
 
-            if(obj.Nome == null || obj.Codigo == null || obj.Descricao == null || obj.DataRegistro == null
-                || obj.Categoria.Descricao == null || obj.Categoria.SubCategoria.Descricao == null
-                || obj.Componente.Basico == null || obj.Componente.Primario == null || obj.Componente.Secundario == null)
-            {
-                return "Erro nos dados digitados, * Campos obrigatório!";
-            }
+            FichaTecnica fichaTecnica = (FichaTecnica)entidadeDominio;
 
-            return null;
-
+            if(fichaTecnica.Nome == null || fichaTecnica.Codigo == null || fichaTecnica.Descricao == null || fichaTecnica.DataRegistro == null
+                || fichaTecnica.Categoria.Descricao == null || fichaTecnica.Categoria.SubCategoria.Descricao == null
+                || fichaTecnica.Componente.Basico == null || fichaTecnica.Componente.Primario == null || fichaTecnica.Componente.Secundario == null)
+                            return "Erro nos dados digitados, * Campos obrigatório!";
+            else 
+                return null;
         }
     }
 }
