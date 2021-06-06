@@ -24,23 +24,18 @@ namespace CadastroProduto.Controllers
         {
             Acessorio acessorio = new Acessorio();           
 
-            List<Acessorio> resultado = new List<Acessorio>();
-            foreach (EntidadeDominio x in facade.Consultar(acessorio))
-            {
-                resultado.Add((Acessorio)x);
-            }
-            return View(resultado);
+            List<Acessorio> listaAcessorio = new List<Acessorio>();
+            foreach (EntidadeDominio item in facade.Consultar(acessorio)) listaAcessorio.Add((Acessorio)item);
+            
+            return View(listaAcessorio);
         }
 
         public IActionResult Create(Linha linha)
         {
-            List<Linha> resultado = new List<Linha>();            
-            foreach (EntidadeDominio x in facade.Consultar(linha))
-            {
-                resultado.Add((Linha)x);
-            }
-            
-            var viewModel = new AcessorioBasicoFormViewModel { Linhas = resultado };
+            List<Linha> listaLinha = new List<Linha>();            
+            foreach (EntidadeDominio item in facade.Consultar(linha)) listaLinha.Add((Linha)item);
+                        
+            var viewModel = new AcessorioBasicoFormViewModel { Linhas = listaLinha };
             
             return View(viewModel);
         }
@@ -49,82 +44,55 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Acessorio acessorio)
         {         
-          var conf = facade.Cadastrar(acessorio);
+          string confirmacao = facade.Cadastrar(acessorio);
 
-            if (conf != null)
-            {
-                return RedirectToAction(nameof(Error), new { message = conf });
-            }
-
+            if (confirmacao != null) return RedirectToAction(nameof(Error), new { message = confirmacao });
+            
             return RedirectToAction("Create", "Acessorios", acessorio.Linha);          
         }
 
-
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }   
-                        
-            var obj = facade.ConsultarId(new Acessorio(), id.Value);
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
-            }
-
-            return View(obj);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                                    
+            Acessorio acessorio = (Acessorio)facade.ConsultarId(new Acessorio() { Id = id.Value });
+            if (acessorio == null) return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
+            
+            return View(acessorio);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {            
-            var obj = facade.ConsultarId(new Acessorio(), id);
-            facade.Excluir(obj);
+            Acessorio acessorio = (Acessorio)facade.ConsultarId(new Acessorio() { Id = id });
+            facade.Excluir(acessorio);
             return RedirectToAction("Index");
         }
 
-
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                       
+            Acessorio acessorio = (Acessorio)facade.ConsultarId(new Acessorio() { Id = id.Value });
+
+            if (acessorio == null) return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
             
-            var obj = facade.ConsultarId(new Acessorio(), id.Value);
-
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
-            }
-
-            return View(obj);
+            return View(acessorio);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {             
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-           
-            var obj = (Acessorio)facade.ConsultarId(new Acessorio(), id.Value);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                       
+            Acessorio acessorio = (Acessorio)facade.ConsultarId(new Acessorio() { Id = id.Value });
 
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });
-            }            
+            if (acessorio == null) return RedirectToAction(nameof(Error), new { message = "Acessório não encontrado" });                    
             
-            List<Linha> resultado = new List<Linha>();
+            List<Linha> listaLinha = new List<Linha>();            
+            foreach (EntidadeDominio item in facade.Consultar(acessorio.Linha)) listaLinha.Add((Linha)item);
             
-            foreach (EntidadeDominio x in facade.Consultar(obj.Linha))
-            {
-                resultado.Add((Linha)x);
-            }
-
-            var viewModel = new AcessorioBasicoFormViewModel { Acessorio = obj, Linhas = resultado };
+            var viewModel = new AcessorioBasicoFormViewModel { Acessorio = acessorio, Linhas = listaLinha };
 
             return View(viewModel);             
         }
@@ -133,11 +101,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Acessorio acessorio)
         {
-            if (id != acessorio.Id)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Acessório escolhido para cadastrar diferente do cadastrado" });
-            }
-
+            if (id != acessorio.Id) return RedirectToAction(nameof(Error), new { message = "Acessório escolhido para cadastrar diferente do cadastrado" });
+            
             try
             {                
                 facade.Alterar(acessorio);
@@ -149,20 +114,13 @@ namespace CadastroProduto.Controllers
             }           
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Sair()
         {
            return RedirectToAction("Index", "Produtos");
-        }      
-
-
-        public IActionResult CreateLinha()
-        {
-            return RedirectToAction("Create", "Linhas");
-        }
-
+        }  
+             
         public IActionResult Error(String message)
         {
             var viewModel = new ErrorViewModel

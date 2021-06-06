@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using CadastroProduto.Data;
-using CadastroProduto.Fachada;
-using CadastroProduto.Dal;
-using CadastroProduto.Models.Domain;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using CadastroProduto.Dal;
 
 namespace CadastroProduto
 {
@@ -45,15 +39,7 @@ namespace CadastroProduto
             services.AddDbContext<DataBaseContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("DALContext"),builder => builder.MigrationsAssembly("CadastroProduto")));
 
-            services.AddScoped<UsuarioDAL>();
-            services.AddScoped<ClienteDAL>();
-            services.AddScoped<LinhaDAL>();
-            services.AddScoped<ProdutoDAL>();
-            services.AddScoped<AcessorioDAL>();
-            services.AddScoped<FichaTecnicaDAL>();
-            services.AddScoped<LogDAL>();
-
-
+            services.AddScoped<DAL>();           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

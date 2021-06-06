@@ -41,8 +41,8 @@ namespace CadastroProduto.Fachada
                 if (confirmacao == null && senhacriptografada != null)
                 {                   
                     dal.Cadastrar(usuario);                   
-                    log.Descricao = gerarLog.Processar(usuario) + ", [Tipo: Inserção]";  
-                    dal.GerarLog(log);
+                    log.Descricao = gerarLog.Processar(usuario) + ", [Tipo: Inserção]";
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -52,7 +52,7 @@ namespace CadastroProduto.Fachada
             {               
                 dal.Cadastrar(entidadeDominio);                             
                 log.Descricao = gerarLog.Processar(entidadeDominio)+ ", [Tipo: Inserção]";                             
-                dal.GerarLog(log);
+                dal.Cadastrar(log);
                 return null;
             }
 
@@ -65,7 +65,7 @@ namespace CadastroProduto.Fachada
                 {                  
                     dal.Cadastrar(entidadeDominio);                    
                     log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Inserção]";  
-                    dal.GerarLog(log);
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -75,7 +75,7 @@ namespace CadastroProduto.Fachada
             {
                 dal.Cadastrar(entidadeDominio);                              
                 log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Inserção]";             
-                dal.GerarLog(log);
+                dal.Cadastrar(log);
                 return null;
             }
 
@@ -87,7 +87,7 @@ namespace CadastroProduto.Fachada
                 {                    
                     dal.Cadastrar(entidadeDominio);
                     log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Inserção]";
-                    dal.GerarLog(log);
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -102,7 +102,7 @@ namespace CadastroProduto.Fachada
                 {                    
                     dal.Cadastrar(entidadeDominio);
                     log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Inserção]";                   
-                    dal.GerarLog(log);
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -130,7 +130,7 @@ namespace CadastroProduto.Fachada
                 {                    
                     dal.Alterar(usuario);
                     log.Descricao = gerarLog.Processar(usuario) + ", [Tipo: Alteração]";                    
-                    dal.GerarLog(log);
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -140,7 +140,7 @@ namespace CadastroProduto.Fachada
             {
                 dal.Alterar(entidadeDominio);
                 log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Alteração]";
-                dal.GerarLog(log);
+                dal.Cadastrar(log);
                 return null;
             }
 
@@ -153,7 +153,7 @@ namespace CadastroProduto.Fachada
                 {
                     dal.Alterar(entidadeDominio);
                     log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Alteração]";
-                    dal.GerarLog(log);
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -163,7 +163,7 @@ namespace CadastroProduto.Fachada
             {
                 dal.Alterar(entidadeDominio);
                 log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Alteração]";
-                dal.GerarLog(log);
+                dal.Cadastrar(log);
                 return null;
             }
 
@@ -175,7 +175,7 @@ namespace CadastroProduto.Fachada
                 {
                     dal.Alterar(entidadeDominio);
                     log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Alteração]";
-                    dal.GerarLog(log);
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -190,7 +190,7 @@ namespace CadastroProduto.Fachada
                 {
                     dal.Alterar(entidadeDominio);
                     log.Descricao = gerarLog.Processar(entidadeDominio) + ", [Tipo: Alteração]";
-                    dal.GerarLog(log);
+                    dal.Cadastrar(log);
                     return null;
                 }
                 return confirmacao;
@@ -207,78 +207,35 @@ namespace CadastroProduto.Fachada
         {            
             return dal.Consultar(entidadeDominio);            
         }
-        //REFATORAR DAQUI PRA BAIXO
-        public EntidadeDominio ConsultarId(EntidadeDominio entidadeDominio, int id)
-        {
-            if (entidadeDominio.GetType().Name.ToLower().Equals("usuario"))
-            {
-                UsuarioDAL dal = new UsuarioDAL(dbContext);
-                return dal.ConsultarId(entidadeDominio.Id);
-            }
-            if (entidadeDominio.GetType().Name.ToLower().Equals("cliente"))
-            {
-                ClienteDAL dal = new ClienteDAL(dbContext);
-                return dal.ConsultarId(id);                
-            }
-            if (entidadeDominio.GetType().Name.ToLower().Equals("produto"))
-            {
-                ProdutoDAL dal = new ProdutoDAL(dbContext);
-                return dal.ConsultarId(id);
-            }
-            if (entidadeDominio.GetType().Name.ToLower().Equals("linha"))
-            {
-                LinhaDAL ld = new LinhaDAL(dbContext);
-                return ld.ConsultarPorId(id);               
-            }
-            if (entidadeDominio.GetType().Name.ToLower().Equals("acessorio"))
-            {
-                DAL dal = new DAL(dbContext);
-                return dal.ConsultarId(id);
-            }
-            if (entidadeDominio.GetType().Name.ToLower().Equals("fichatecnica"))
-            {
-                FichaTecnicaDAL dal = new FichaTecnicaDAL(dbContext);
-                return dal.ConsultarId(id);
-            }
-            else return null;
-        }
-        
-        //REFATORAR TOTAL
        
+        public EntidadeDominio ConsultarId(EntidadeDominio entidadeDominio)
+        {
+           return dal.ConsultarId(entidadeDominio);          
+        }        
+            
         public Linha ConsultarRemover(int id)
-        {
-            LinhaDAL ld = new LinhaDAL(dbContext);
-            var obj = ld.ConsultarRemover(id);
-            return obj;
-        }
-        
+        {           
+            return dal.ConsultarRemoverLinha(id);           
+        }        
 
-        public ICollection<Produto> ConsultarFiltro(Produto produto)
-        {
-            ProdutoDAL dal = new ProdutoDAL(dbContext);
-            var prod = dal.ConsultarFiltro(produto);
-            return prod;
-        }
-
-       
+        public ICollection<Produto> ConsultarFiltroProdutos(Produto produto)
+        {           
+            return dal.ConsultarFiltroProdutos(produto);            
+        }       
 
         public Usuario ConsultarEmail(String email)
-        {
-            UsuarioDAL dal = new UsuarioDAL(dbContext);
+        {           
             return dal.ConsultarEmail(email);
         }
 
         public bool Login(EntidadeDominio entidadeDominio)
         {
-            var obj = (Usuario)entidadeDominio;
-            CriptografarSenha crip = new CriptografarSenha();
-            var senhacrip = crip.Processar(entidadeDominio);
+            Usuario usuario = (Usuario)entidadeDominio;
+            CriptografarSenha criptografar = new CriptografarSenha();
+            string senhacrip = criptografar.Processar(usuario);
 
-            obj.Senha = senhacrip;
-
-            UsuarioDAL dal = new UsuarioDAL(dbContext);
-            var conf = dal.Login(obj);
-            return conf;
+            usuario.Senha = senhacrip;            
+            return dal.Login(usuario);            
         }
 
     }

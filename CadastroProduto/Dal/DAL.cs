@@ -16,6 +16,7 @@ namespace CadastroProduto.Dal
             this.dbContext = dbContext;
         }        
 
+        //MÉTODOS GENÉRICOS
         public void Cadastrar(EntidadeDominio entidadeDominio)
         {
             dbContext.Add(entidadeDominio);
@@ -94,23 +95,206 @@ namespace CadastroProduto.Dal
             }           
         }
 
-        public EntidadeDominio ConsultarId(int id)
+        public EntidadeDominio ConsultarId(EntidadeDominio entidadeDominio)
         {
+            if (entidadeDominio.GetType().Name.ToLower().Equals("acessorio"))
+            {
+                 return dbContext.Acessorio
+                    .Include(x => x.Linha)
+                    .FirstOrDefault(x => x.Id == entidadeDominio.Id);                              
+            }
 
-            var acessorio = dbContext.Acessorio
-                .Include(x => x.Linha)
-                .FirstOrDefault(x => x.Id == id);
-            if (acessorio != null) return acessorio; 
-            else return null;
-          
+            if (entidadeDominio.GetType().Name.ToLower().Equals("cliente"))
+            {
+                return dbContext.Cliente
+               .Include(x => x.Endereco)
+               .Include(x => x.Endereco.Cidade)
+               .Include(x => x.Endereco.Cidade.Estado)
+               .FirstOrDefault(x => x.Id == entidadeDominio.Id);
+            }
+
+            if (entidadeDominio.GetType().Name.ToLower().Equals("fichatecnica"))
+            {
+                return dbContext.FichaTecnica
+                .Include(x => x.Componente)
+                .Include(x => x.Categoria)
+                .Include(x => x.Categoria.SubCategoria)
+                .FirstOrDefault(x => x.Id == entidadeDominio.Id);
+            }
+
+            if (entidadeDominio.GetType().Name.ToLower().Equals("linha"))
+            {
+                Linha linha = dbContext.Linha
+                .Include(obj => obj.FichaTecnicaLinha)
+                .Include(obj => obj.Acessorio)
+                .FirstOrDefault(x => x.Id == entidadeDominio.Id);
+
+                if (linha != null)
+                {
+                    var acessorios = dbContext.Acessorio.Where(x => x.LinhaId == entidadeDominio.Id).ToList();
+
+                    Linha linhaAcessorio = new Linha { Id = linha.Id, Codigo = linha.Codigo, Nome = linha.Nome, FichaTecnicaLinha = linha.FichaTecnicaLinha, Acessorios = acessorios };
+                    return linhaAcessorio;
+                }
+                else return null;
+            }
+
+            if (entidadeDominio.GetType().Name.ToLower().Equals("produto"))
+            {
+                try
+                {
+                    Produto produto = dbContext.Produto
+                        .Include(obj => obj.Cliente)
+                        .Include(obj => obj.Cliente.Endereco)
+                        .Include(obj => obj.Cliente.Endereco.Cidade)
+                        .Include(obj => obj.Cliente.Endereco.Cidade.Estado)
+                        .Include(obj => obj.FichaTecnica)
+                        .Include(obj => obj.FichaTecnica.Componente)
+                        .Include(obj => obj.FichaTecnica.Categoria)
+                        .Include(obj => obj.FichaTecnica.Categoria.SubCategoria)
+                        .Include(obj => obj.Linha)
+                        .FirstOrDefault(x => x.Id == entidadeDominio.Id);
+
+                    if (produto != null)
+                    {
+                        Linha linha = (Linha)ConsultarId(new Linha() { Id = entidadeDominio.Id });
+                        produto.Linha = linha;
+                        return produto;
+                    }
+                    else return null;                   
+                }
+                catch (ApplicationException e)
+                {
+                    throw new ApplicationException(e.Message);
+                }
+            }
+
+            if (entidadeDominio.GetType().Name.Equals("usuario"))
+            {
+                return dbContext.Usuario.FirstOrDefault(x => x.Id == entidadeDominio.Id);
+            }
+
+            return null;          
         }
 
-        public void GerarLog(Log log)
+        //*********MÉTODOS ESPECIALISTA****************         
+        public Linha ConsultarRemoverLinha(int id)
+        {
+            return dbContext.Linha.FirstOrDefault(x => x.Id == id);
+        }
+
+        public Usuario ConsultarEmail(String email)
+        {
+            return dbContext.Usuario.FirstOrDefault(x => x.Email == email);
+        }
+
+        public bool Login(Usuario usuario)
         {            
-            dbContext.Add(log);
-            dbContext.SaveChanges();
-
+            Usuario usuarioBanco = dbContext.Usuario.FirstOrDefault(x => x.Email == usuario.Email);
+            if (usuarioBanco != null)
+            {                
+                if (usuario.Senha.Equals(usuarioBanco.Senha)) return true;                
+            }
+            return false;
         }
 
+        public ICollection<Produto> ConsultarFiltroProdutos(Produto produto)
+        {
+            HashSet<Produto> consulta = new HashSet<Produto>();
+
+            if (produto.Codigo != null)
+            {               
+                var resultado = dbContext.Produto.Where(x => x.Codigo == produto.Codigo).ToList();
+                foreach (Produto item in resultado)
+                {
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (produto.Nome != null)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Nome == produto.Nome).ToList();
+                foreach (Produto item in resultado)
+                {
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (produto.Valor >= 0.0)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Valor == produto.Valor).ToList();
+                foreach (Produto item in resultado)
+                {
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (produto.DataEntrada != null)
+            {
+                var resultado = dbContext.Produto.Where(x => x.DataEntrada == produto.DataEntrada).ToList();
+                foreach (Produto item in resultado)
+                {
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (produto.Quantidade >= 0)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Quantidade == produto.Quantidade).ToList();
+                foreach (Produto item in resultado)
+                {
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (produto.Status)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Status == true).ToList();
+                foreach (Produto item in resultado)
+                {
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (!produto.Status)
+            {
+                var resultado = dbContext.Produto.Where(x => x.Status == false).ToList();
+                foreach (Produto item in resultado)
+                {
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (produto.FichaTecnica.Nome != null)
+            {
+                var resultado = dbContext.FichaTecnica.Where(x => x.Nome == produto.FichaTecnica.Nome).ToList();
+                foreach (FichaTecnica item in resultado)
+                {
+                    Produto idProdutoFicha = dbContext.Produto.Where(x => x.FichaTecnica.Id == item.Id).FirstOrDefault();
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            if (produto.Cliente.Nome != null)
+            {
+                var resultado = dbContext.Cliente.Where(x => x.Nome == produto.Cliente.Nome).ToList();
+                foreach (Cliente item in resultado)
+                {
+                    Produto idProdutoCliente = dbContext.Produto.Where(x => x.Cliente.Id == item.Id).FirstOrDefault();
+                    Produto retornoProduto = (Produto)ConsultarId(produto);
+                    consulta.Add(retornoProduto);
+                }
+            }
+
+            return consulta;
+        }       
     }
 }

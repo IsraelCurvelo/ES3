@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -18,11 +15,9 @@ namespace CadastroProduto.Models.Domain
 
         [Required(ErrorMessage = "{0} obrigatório")]
         [Display(Name = "Componente secundario")]
-        public String Secundario{ get; set; }
+        public String Secundario { get; set; }
 
-        public Componente()
-        {
-        }
+        public Componente() { }
 
         public Componente(int id, String basico, String primario, String secundario) : base(id)
         {

@@ -25,11 +25,10 @@ namespace CadastroProduto.Controllers
             Cliente cliente = new Cliente();          
 
             List<Cliente> resultado = new List<Cliente>();
-            foreach (EntidadeDominio x in facade.Consultar(cliente))
+            foreach (EntidadeDominio item in facade.Consultar(cliente))
             {
-                resultado.Add((Cliente)x);
-            }
-            
+                resultado.Add((Cliente)item);
+            }            
             return View(resultado);
         }
 
@@ -42,75 +41,56 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Cliente cliente)
         {            
-            var conf = facade.Cadastrar(cliente);           
+            string confirmacao = facade.Cadastrar(cliente);           
             return RedirectToAction(nameof(Index));        
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                        
+            Cliente cliente = (Cliente)facade.ConsultarId(new Cliente() { Id = id.Value });
+            if (cliente == null) return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
             
-            var obj = facade.ConsultarId(new Cliente(), id.Value);
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
-            }
-            return View(obj);
+            return View(cliente);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {            
-            var obj = facade.ConsultarId(new Cliente(), id);
-            facade.Excluir(obj);
+            Cliente cliente = (Cliente)facade.ConsultarId(new Cliente() { Id = id });
+            facade.Excluir(cliente);
             return RedirectToAction("Index");
         }
 
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-           
-            var obj = facade.ConsultarId(new Cliente(), id.Value);
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
-            }
-            return View(obj);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                      
+            Cliente cliente = (Cliente)facade.ConsultarId(new Cliente() { Id = id.Value });
+            if (cliente == null) return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
+            
+            return View(cliente);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-            
-            var obj = facade.ConsultarId(new Cliente(), id.Value);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                        
+            Cliente cliente = (Cliente)facade.ConsultarId(new Cliente() { Id = id.Value });
 
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
-            }
-
-            return View(obj);
+            if (cliente == null) return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
+           
+            return View(cliente);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Cliente cliente)
         {
-            if (id != cliente.Id)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Cliente selecionado para editar diferente do que está cadastrado" });
-            }
-
+            if (id != cliente.Id) return RedirectToAction(nameof(Error), new { message = "Cliente selecionado para editar diferente do que está cadastrado" });
+            
             try
             {                
                 facade.Alterar(cliente);        

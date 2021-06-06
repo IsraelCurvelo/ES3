@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -27,11 +23,8 @@ namespace CadastroProduto.Models.Domain
         public String Cep { get; set; }
         public Cidade Cidade { get; set; }
 
-        public Endereco()
-        {
-
-        }
-
+        public Endereco() { }
+        
         public Endereco( int id ,string logradouro, string numero, string complemento, string bairro, string cep, Cidade cidade) : base(id)
         {
             Logradouro = logradouro;
@@ -50,7 +43,6 @@ namespace CadastroProduto.Models.Domain
             Cep = cep;
             Cidade = cidade;
         }
-
 
         public override String ToString()
         {

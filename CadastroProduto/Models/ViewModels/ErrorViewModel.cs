@@ -1,7 +1,6 @@
 using System;
 
 namespace CadastroProduto.Models.ViewModels
-
 {
     public class ErrorViewModel
     {

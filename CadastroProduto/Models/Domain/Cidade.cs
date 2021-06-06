@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -13,10 +10,7 @@ namespace CadastroProduto.Models.Domain
         public String Descricao { get; set; }
         public Estado Estado { get; set; }
 
-        public Cidade()
-        {
-
-        }
+        public Cidade(){ }
 
         public Cidade(int id, String descricao,Estado estado): base(id)
         {
@@ -29,7 +23,5 @@ namespace CadastroProduto.Models.Domain
             Descricao = descricao;
             Estado = estado;
         }
-
-
     }
 }

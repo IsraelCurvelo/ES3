@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace CadastroProduto.Models.Domain
@@ -30,16 +27,13 @@ namespace CadastroProduto.Models.Domain
         [Required(ErrorMessage = "Confirmação obrigatória")]             
         public String ConfirmacaoSenha { get; set; }
 
-        public Usuario()
-        {
-        }
-
+        public Usuario() { }
+        
         public Usuario(int id, String nome, String email, String senha) : base(id)
         {
             Nome = nome;
             Email = email;
             Senha = senha;
         }   
-
     }
 }

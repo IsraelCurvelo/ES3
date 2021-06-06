@@ -20,16 +20,14 @@ namespace CadastroProduto.Controllers
             facade = new Facade(dbContext);
         }
 
-        public IActionResult Index(Produto produtos)
+        public IActionResult Index()
         {            
             Produto produto = new Produto();          
 
-            List<Produto> resultado = new List<Produto>();
-            foreach (EntidadeDominio x in facade.Consultar(produto))
-            {
-                resultado.Add((Produto)x);
-            }
-            return View(resultado);         
+            List<Produto> listaProduto = new List<Produto>();
+            foreach (EntidadeDominio item in facade.Consultar(produto))  listaProduto.Add((Produto)item);
+            
+            return View(listaProduto);         
         }
 
         public IActionResult Create()
@@ -41,71 +39,50 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Produto produto)
         {                    
-            var conf = facade.Cadastrar(produto);
+            string confirmacao = facade.Cadastrar(produto);
             
-            if (conf != null)
-            {
-                return RedirectToAction(nameof(Error), new { message = conf });
-            }
-
+            if (confirmacao != null) return RedirectToAction(nameof(Error), new { message = confirmacao });
+          
             return RedirectToAction("Create","Acessorios",produto.Linha);
         }
 
         public IActionResult Delete(int? id)
         {
-            if(id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if(id == null)  return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                        
+            Produto produto = (Produto)facade.ConsultarId(new Produto() { Id = id.Value });
+            if(produto == null)  return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
             
-            var obj = facade.ConsultarId(new Produto(), id.Value);
-            if(obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
-            }
-            return View(obj);
+            return View(produto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete (int id)
         {                       
-            var obj = facade.ConsultarId(new Produto() { Id = id}, id);
-            facade.Excluir(obj);
+            Produto produto = (Produto)facade.ConsultarId(new Produto() { Id = id });
+            facade.Excluir(produto);
             return RedirectToAction("Index");
         }
 
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-            
-            var obj = facade.ConsultarId(new Produto(), id.Value);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
-            }
-            return View(obj);
+            Produto produto = (Produto)facade.ConsultarId(new Produto() { Id = id.Value });
+            if (produto == null) return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
+           
+            return View(produto);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-            
-            var obj = facade.ConsultarId(new Produto(), id.Value);
+            if (id == null)  return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
-            }
-
-            return View(obj);
+            Produto produto = (Produto)facade.ConsultarId(new Produto() { Id = id.Value });
+            if (produto == null)  return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
+                      
+            return View(produto);
         }
 
         [HttpPost]
@@ -113,11 +90,8 @@ namespace CadastroProduto.Controllers
         public IActionResult Edit(int id, Produto produto)
         {
 
-            if (id != produto.Id)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Produto escolhido pra editar não existe" });
-            }
-
+            if (id != produto.Id) return RedirectToAction(nameof(Error), new { message = "Produto escolhido pra editar não existe" });
+            
             try
             {                
                 facade.Alterar(produto);
@@ -138,8 +112,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Consultar(Produto produto)
         {           
-            var prod = facade.ConsultarFiltro(produto);
-            return View("ResultadoFiltro",prod);           
+            var listaProdutos = facade.ConsultarFiltroProdutos(produto);
+            return View("ResultadoFiltro", listaProdutos);           
         }        
 
         public IActionResult Error(String message)

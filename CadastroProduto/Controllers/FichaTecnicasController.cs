@@ -24,12 +24,10 @@ namespace CadastroProduto.Controllers
         {
             FichaTecnica fichaTecnica = new FichaTecnica();           
 
-            List<FichaTecnica> resultado = new List<FichaTecnica>();
-            foreach (EntidadeDominio x in facade.Consultar(fichaTecnica))
-            {
-                resultado.Add((FichaTecnica)x);
-            }
-            return View(resultado);
+            List<FichaTecnica> listaFichaTecnica = new List<FichaTecnica>();
+            foreach (EntidadeDominio item in facade.Consultar(fichaTecnica)) listaFichaTecnica.Add((FichaTecnica)item);
+           
+            return View(listaFichaTecnica);
         }
 
         public IActionResult Create()
@@ -41,71 +39,51 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(FichaTecnica fichaTecnica)
         {                      
-            var conf = facade.Cadastrar(fichaTecnica);
+            string confirmacao = facade.Cadastrar(fichaTecnica);
 
-            if(conf != null)
-            {
-                return RedirectToAction(nameof(Error), new { message = conf });
-            }
+            if(confirmacao != null) return RedirectToAction(nameof(Error), new { message = confirmacao });
+            
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-            
-            var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
-
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
-            }
-            return View(obj);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                        
+            FichaTecnica fichaTecnica = (FichaTecnica)facade.ConsultarId(new FichaTecnica() { Id = id.Value });
+            if (fichaTecnica == null) return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
+           
+            return View(fichaTecnica);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
-        {           
-            var obj = facade.ConsultarId(new FichaTecnica(), id);
+        {
+            FichaTecnica fichaTecnica = (FichaTecnica)facade.ConsultarId(new FichaTecnica() { Id = id });
 
-            facade.Excluir(obj);
+            facade.Excluir(fichaTecnica);
             return RedirectToAction("Index");
         }
 
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-            
-            var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
-            }
-            return View(obj);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+
+            FichaTecnica fichaTecnica = (FichaTecnica)facade.ConsultarId(new FichaTecnica() { Id = id.Value });
+            if (fichaTecnica == null) return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
+          
+            return View(fichaTecnica);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+
+            FichaTecnica fichaTecnica = (FichaTecnica)facade.ConsultarId(new FichaTecnica() { Id = id.Value });
+            if (fichaTecnica == null) return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
            
-            var obj = facade.ConsultarId(new FichaTecnica(), id.Value);
-
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica não encontrada" });
-            }
-
-            return View(obj);
+            return View(fichaTecnica);
         }
 
         [HttpPost]
@@ -113,11 +91,8 @@ namespace CadastroProduto.Controllers
         public IActionResult Edit(int id, FichaTecnica fichaTecnica)
         {
 
-            if (id != fichaTecnica.Id)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Ficha Técnica selecionada diferente da que está cadastrada" });
-            }
-
+            if (id != fichaTecnica.Id)  return RedirectToAction(nameof(Error), new { message = "Ficha Técnica selecionada diferente da que está cadastrada" });
+           
             try
             {                
                 facade.Alterar(fichaTecnica);

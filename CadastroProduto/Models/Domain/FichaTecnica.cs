@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -28,14 +25,10 @@ namespace CadastroProduto.Models.Domain
         [Display(Name = "Observações")]        
         public String  Observacoes { get; set; }
         public Categoria Categoria { get; set; }
-        public Componente Componente { get; set; }
+        public Componente Componente { get; set; }   
       
-        
-
-        public FichaTecnica()
-        {
-        }
-
+        public FichaTecnica() { }
+       
         public FichaTecnica(int id, String codigo, String nome, String descricao, Categoria categoria, Componente componente,  String observacoes): base(id)
         {
             Codigo = codigo;
@@ -46,13 +39,6 @@ namespace CadastroProduto.Models.Domain
             Componente = componente;
             
             Observacoes = observacoes;
-        }
-
-      
-
-        public void ValidarDados()
-        {
-
         }
     }
 }

@@ -5,7 +5,6 @@ namespace CadastroProduto.Dal
 {
     public interface IDAL 
     {
-
        void Cadastrar(EntidadeDominio entidadeDominio);
 
        void Alterar(EntidadeDominio entidadeDominio);
@@ -13,6 +12,8 @@ namespace CadastroProduto.Dal
        void Excluir(EntidadeDominio entidadeDominio);
 
        List<EntidadeDominio> Consultar(EntidadeDominio entidadeDominio);
-      
+
+       EntidadeDominio ConsultarId(EntidadeDominio entidadeDominio);
+
     }
 }

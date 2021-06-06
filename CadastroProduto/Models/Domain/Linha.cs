@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.Permissions;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -23,20 +20,13 @@ namespace CadastroProduto.Models.Domain
         public List<Acessorio> Acessorios { get; set; }
 
 
-        public Linha()
-        {
-        }
+        public Linha() { }        
 
         public Linha(int id, String codigo, String nome, FichaTecnicaLinha fichaTecnicaLinha) : base(id)
         {
             Codigo = codigo;
             Nome = nome;
-            FichaTecnicaLinha = fichaTecnicaLinha;
-            
+            FichaTecnicaLinha = fichaTecnicaLinha;            
         }
-
-        
-        
-
     }
 }

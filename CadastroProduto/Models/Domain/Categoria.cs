@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -13,9 +10,7 @@ namespace CadastroProduto.Models.Domain
         public String Descricao { get; set; }
         public SubCategoria SubCategoria { get; set; }
 
-        public Categoria()
-        {
-        }
+        public Categoria(){ }
 
         public Categoria(int id, String descricao, SubCategoria subCategoria) : base(id)
         {

@@ -36,9 +36,7 @@ namespace CadastroProduto.Models.Domain
         [Display(Name = "Linha")]
         public int LinhaId { get; set; }
 
-        public Acessorio()
-        {
-        }
+        public Acessorio(){ }
 
         public Acessorio(string nome, string codigo, string descricao, int quantidade, double valor, bool basico)
         {

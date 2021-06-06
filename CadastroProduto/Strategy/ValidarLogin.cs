@@ -9,20 +9,18 @@ namespace CadastroProduto.Strategy
     {
         public String Processar(EntidadeDominio entidadeDominio)
         {
-            if (!entidadeDominio.GetType().Name.Equals("usuario")) return "Objeto diferente do esperado";
+            if (!entidadeDominio.GetType().Name.Equals("usuario")) return null;
 
             Usuario usuario = (Usuario)entidadeDominio;
 
             CriptografarSenha criptografarSenha = new CriptografarSenha();
             string confirmacao = criptografarSenha.Processar(usuario);
 
-
-            //REFATORAR *********************************************************
-            UsuarioDAL dal = new UsuarioDAL(new DataBaseContext());
-            Usuario usuarioBanco = dal.ConsultarId(usuario.Id);
+            DAL dal = new DAL(new DataBaseContext());
+            Usuario usuarioBanco = (Usuario)dal.ConsultarId(usuario);
 
             if(usuario.Email != usuarioBanco.Email || usuario.Senha != usuarioBanco.Senha) return null;          
-            else return "";
+            else return "Ok";
         }
     }
 }

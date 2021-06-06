@@ -41,10 +41,10 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Login(Usuario usuario)
         {           
-            var conf = facade.Login(usuario);
-            if (conf )
+            bool confirmacao = facade.Login(usuario);
+            if (confirmacao)
             {
-                var logado = facade.ConsultarEmail(usuario.Email);
+                Usuario logado = facade.ConsultarEmail(usuario.Email);
                 return RedirectToAction("IndexUsuario", "Home", logado);
             }
 

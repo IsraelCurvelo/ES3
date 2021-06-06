@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -12,9 +9,7 @@ namespace CadastroProduto.Models.Domain
         [Display(Name = "Descrição")]
         public String Descricao { get; set; }
 
-        public FichaTecnicaLinha()
-        {
-        }
+        public FichaTecnicaLinha() { }       
 
         public FichaTecnicaLinha(int id, string descricao): base(id)
         {

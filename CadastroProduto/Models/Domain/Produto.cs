@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CadastroProduto.Models.Domain
 {
@@ -26,7 +22,6 @@ namespace CadastroProduto.Models.Domain
         [Required(ErrorMessage = "{0} obrigatório")]
         [Display(Name = "Data de entrada")]
         public DateTime DataEntrada { get; set; }
-
         
         [Display(Name="Ativo?")]
         public Boolean Status { get; set; }
@@ -37,9 +32,8 @@ namespace CadastroProduto.Models.Domain
         public Cliente Cliente { get; set; }
         public FichaTecnica FichaTecnica { get; set; }
         public Linha Linha { get; set; }
-        public Produto()
-        {
-        }
+
+        public Produto() { }        
 
         public Produto(int id, String codigo, String nome, Double valor, DateTime dataEntrada, bool status, int quantidade, Cliente cliente, FichaTecnica fichaTecnica): base(id)
         {
@@ -51,16 +45,6 @@ namespace CadastroProduto.Models.Domain
             Quantidade = quantidade;
             Cliente = cliente;
             FichaTecnica = fichaTecnica;
-        }
-
-        public void ValidarDados()
-        {
-
-        }
-
-        public void AtivarInativarProduto()
-        {
-
-        }
+        }        
     }
 }

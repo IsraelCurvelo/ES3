@@ -24,12 +24,10 @@ namespace CadastroProduto.Controllers
         {
             Linha linha = new Linha();            
 
-            List<Linha> resultado = new List<Linha>();
-            foreach (EntidadeDominio x in facade.Consultar(linha))
-            {
-                resultado.Add((Linha)x);
-            }
-            return View(resultado);
+            List<Linha> listaLinha = new List<Linha>();
+            foreach (EntidadeDominio x in facade.Consultar(linha)) listaLinha.Add((Linha)x);
+            
+            return View(listaLinha);
         }
 
         public IActionResult Create()
@@ -41,65 +39,47 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Linha linha)
         {                    
-            var conf = facade.Cadastrar(linha);
+            string confirmacao = facade.Cadastrar(linha);
             return RedirectToAction("Create", "Acessorios", linha);
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                        
+            Linha linha = (Linha)facade.ConsultarId(new Linha() { Id = id.Value });
+            if (linha == null) return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             
-            var obj = facade.ConsultarId(new Linha(), id.Value);
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
-            }
-            return View(obj);
+            return View(linha);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {     
-            var obj = facade.ConsultarRemover(id);
-            facade.Excluir(obj);
+            Linha linhaRemover = facade.ConsultarRemover(id);
+            facade.Excluir(linhaRemover);
             return RedirectToAction("Index");
         }
 
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                        
+            Linha linha = (Linha)facade.ConsultarId(new Linha() { Id = id.Value });
+            if (linha == null) return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             
-            var obj = facade.ConsultarId(new Linha(), id.Value);
-
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
-            }
-            return View(obj);
+            return View(linha);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+
+            Linha linha = (Linha)facade.ConsultarId(new Linha() { Id = id.Value });
+            if (linha == null) return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             
-            var obj = facade.ConsultarId(new Linha(), id.Value);
-
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
-            }
-
-            return View(obj);
+            return View(linha);
         }
 
         [HttpPost]
@@ -107,11 +87,8 @@ namespace CadastroProduto.Controllers
         public IActionResult Edit(int id, Linha linha)
         {
 
-            if (id != linha.Id)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Linha escolhida para editar diferente da cadastrada" });
-            }
-
+            if (id != linha.Id) return RedirectToAction(nameof(Error), new { message = "Linha escolhida para editar diferente da cadastrada" });
+            
             try
             {               
                 facade.Alterar(linha);

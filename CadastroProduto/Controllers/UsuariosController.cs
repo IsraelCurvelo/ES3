@@ -25,12 +25,10 @@ namespace CadastroProduto.Controllers
         {
             Usuario usuario = new Usuario();            
 
-            List<Usuario> resultado = new List<Usuario>();
-            foreach (EntidadeDominio x in facade.Consultar(usuario))
-            {
-                resultado.Add((Usuario)x);
-            }
-            return View(resultado);
+            List<Usuario> listaUsuario = new List<Usuario>();
+            foreach (EntidadeDominio x in facade.Consultar(usuario)) listaUsuario.Add((Usuario)x);
+            
+            return View(listaUsuario);
         }
 
         public IActionResult Create()
@@ -42,83 +40,61 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Usuario usuario)
         {          
-            var conf = facade.Cadastrar(usuario);
+            string conf = facade.Cadastrar(usuario);
             
-            if (conf != null)
-            {
-                return RedirectToAction(nameof(Error), new { message = conf});
-            }
-
+            if (conf != null) return RedirectToAction(nameof(Error), new { message = conf});
+            
             return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            
+            Usuario usuario = (Usuario)facade.ConsultarId(new Usuario() { Id = id.Value });
 
-            var obj = facade.ConsultarId(new Usuario(), id.Value);
-
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
-            }
-            return View(obj);
+            if (usuario == null) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            
+            return View(usuario);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {            
-            var obj = facade.ConsultarId(new Usuario(), id);
-            facade.Excluir(obj);
+            Usuario usuario = (Usuario)facade.ConsultarId(new Usuario() { Id = id });
+            facade.Excluir(usuario);
             return RedirectToAction("Index");
         }
 
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
-            
-            var obj = facade.ConsultarId(new Usuario(), id.Value);
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+                        
+            Usuario usuario = (Usuario)facade.ConsultarId(new Usuario() { Id = id.Value });
 
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
-            }
-            return View(obj);
+            if (usuario == null) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            
+            return View(usuario);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
-            }
+            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            
+            Usuario usuario = (Usuario)facade.ConsultarId(new Usuario() { Id = id.Value });
 
-            var obj = facade.ConsultarId(new Usuario(), id.Value);
-
-            if (obj == null)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
-            }
-
-            return View(obj);
+            if (usuario == null) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            
+            return View(usuario);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Usuario usuario)
         {
-            if(id != usuario.Id)
-            {
-                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
-            }
-
+            if(id != usuario.Id) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            
             try
             {
                 facade.Alterar(usuario);
