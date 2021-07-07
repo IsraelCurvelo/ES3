@@ -25,18 +25,107 @@ namespace CadastroProduto.Dal
 
         public void Alterar(EntidadeDominio entidadeDominio)
         {
-            if (!dbContext.Acessorio.Any(x => x.Id == entidadeDominio.Id))
+            
+            switch (entidadeDominio.GetType().Name.ToLower())
             {
-                throw new ApplicationException("Objeto não encontrado");
-            }
-            try
-            {
-                dbContext.Update(entidadeDominio);
-                dbContext.SaveChanges();
-            }
-            catch (ApplicationException e)
-            {
-                throw new ApplicationException(e.Message);
+                case ("acessorio"):
+                    if (!dbContext.Acessorio.Any(x => x.Id == entidadeDominio.Id))
+                    {
+                        throw new ApplicationException("Objeto não encontrado");
+                    }
+                    try
+                    {
+                        dbContext.Update(entidadeDominio);
+                        dbContext.SaveChanges();
+                    }
+                    catch (ApplicationException e)
+                    {
+                        throw new ApplicationException(e.Message);
+                    }
+                    break;
+
+                case ("usuario"):
+                    if (!dbContext.Usuario.Any(x => x.Id == entidadeDominio.Id))
+                    {
+                        throw new ApplicationException("Objeto não encontrado");
+                    }
+                    try
+                    {
+                        dbContext.Update(entidadeDominio);
+                        dbContext.SaveChanges();
+                    }
+                    catch (ApplicationException e)
+                    {
+                        throw new ApplicationException(e.Message);
+                    }
+                    break;
+
+                case ("cliente"):
+                    if (!dbContext.Cliente.Any(x => x.Id == entidadeDominio.Id))
+                    {
+                        throw new ApplicationException("Objeto não encontrado");
+                    }
+                    try
+                    {
+                        dbContext.Update(entidadeDominio);
+                        dbContext.SaveChanges();
+                    }
+                    catch (ApplicationException e)
+                    {
+                        throw new ApplicationException(e.Message);
+                    }
+                    break;
+
+                case ("produto"):
+                    if (!dbContext.Produto.Any(x => x.Id == entidadeDominio.Id))
+                    {
+                        throw new ApplicationException("Objeto não encontrado");
+                    }
+                    try
+                    {
+                        dbContext.Update(entidadeDominio);
+                        dbContext.SaveChanges();
+                    }
+                    catch (ApplicationException e)
+                    {
+                        throw new ApplicationException(e.Message);
+                    }
+                    break;
+
+                case ("linha"):
+                    if (!dbContext.Linha.Any(x => x.Id == entidadeDominio.Id))
+                    {
+                        throw new ApplicationException("Objeto não encontrado");
+                    }
+                    try
+                    {
+                        dbContext.Update(entidadeDominio);
+                        dbContext.SaveChanges();
+                    }
+                    catch (ApplicationException e)
+                    {
+                        throw new ApplicationException(e.Message);
+                    }
+                    break;
+
+                case ("fichatecnica"):
+                    if (!dbContext.FichaTecnica.Any(x => x.Id == entidadeDominio.Id))
+                    {
+                        throw new ApplicationException("Objeto não encontrado");
+                    }
+                    try
+                    {
+                        dbContext.Update(entidadeDominio);
+                        dbContext.SaveChanges();
+                    }
+                    catch (ApplicationException e)
+                    {
+                        throw new ApplicationException(e.Message);
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
 

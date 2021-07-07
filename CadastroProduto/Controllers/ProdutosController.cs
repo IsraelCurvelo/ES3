@@ -25,7 +25,9 @@ namespace CadastroProduto.Controllers
             Produto produto = new Produto();          
 
             List<Produto> listaProduto = new List<Produto>();
-            foreach (EntidadeDominio item in facade.Consultar(produto))  listaProduto.Add((Produto)item);
+
+            foreach (EntidadeDominio item in facade.Consultar(produto)) 
+                listaProduto.Add((Produto)item);
             
             return View(listaProduto);         
         }
@@ -41,17 +43,20 @@ namespace CadastroProduto.Controllers
         {                    
             string confirmacao = facade.Cadastrar(produto);
             
-            if (confirmacao != null) return RedirectToAction(nameof(Error), new { message = confirmacao });
+            if (confirmacao != null) 
+                return RedirectToAction(nameof(Error), new { message = confirmacao });
           
             return RedirectToAction("Create","Acessorios",produto.Linha);
         }
 
         public IActionResult Delete(int? id)
         {
-            if(id == null)  return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if(id == null)  
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
                         
             Produto produto = (Produto)facade.ConsultarId(new Produto() { Id = id.Value });
-            if(produto == null)  return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
+            if(produto == null)  
+                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
             
             return View(produto);
         }
@@ -67,20 +72,26 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Details(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null)
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 
             Produto produto = (Produto)facade.ConsultarId(new Produto() { Id = id.Value });
-            if (produto == null) return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
+
+            if (produto == null) 
+                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
            
             return View(produto);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)  return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null)  
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 
             Produto produto = (Produto)facade.ConsultarId(new Produto() { Id = id.Value });
-            if (produto == null)  return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
+
+            if (produto == null)  
+                return RedirectToAction(nameof(Error), new { message = "Esse produto não existe" });
                       
             return View(produto);
         }
@@ -90,7 +101,8 @@ namespace CadastroProduto.Controllers
         public IActionResult Edit(int id, Produto produto)
         {
 
-            if (id != produto.Id) return RedirectToAction(nameof(Error), new { message = "Produto escolhido pra editar não existe" });
+            if (id != produto.Id) 
+                return RedirectToAction(nameof(Error), new { message = "Produto escolhido pra editar não existe" });
             
             try
             {                
