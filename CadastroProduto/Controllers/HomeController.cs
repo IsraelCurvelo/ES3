@@ -42,6 +42,7 @@ namespace CadastroProduto.Controllers
         public IActionResult Login(Usuario usuario)
         {           
             bool confirmacao = facade.Login(usuario);
+
             if (confirmacao)
             {
                 Usuario logado = facade.ConsultarEmail(usuario.Email);

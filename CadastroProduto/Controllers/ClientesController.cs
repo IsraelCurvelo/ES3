@@ -22,13 +22,12 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Index()
         {
-            Cliente cliente = new Cliente();          
-
+            Cliente cliente = new Cliente();       
             List<Cliente> resultado = new List<Cliente>();
+
             foreach (EntidadeDominio item in facade.Consultar(cliente))
-            {
                 resultado.Add((Cliente)item);
-            }            
+            
             return View(resultado);
         }
 
@@ -47,10 +46,13 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null)
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
                         
             Cliente cliente = (Cliente)facade.ConsultarId(new Cliente() { Id = id.Value });
-            if (cliente == null) return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
+
+            if (cliente == null) 
+                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
             
             return View(cliente);
         }
@@ -66,21 +68,26 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Details(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null)
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
                       
             Cliente cliente = (Cliente)facade.ConsultarId(new Cliente() { Id = id.Value });
-            if (cliente == null) return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
+
+            if (cliente == null) 
+                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
             
             return View(cliente);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null) 
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
                         
             Cliente cliente = (Cliente)facade.ConsultarId(new Cliente() { Id = id.Value });
 
-            if (cliente == null) return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
+            if (cliente == null)
+                return RedirectToAction(nameof(Error), new { message = "Cliente não cadastrado" });
            
             return View(cliente);
         }

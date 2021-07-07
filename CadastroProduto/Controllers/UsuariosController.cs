@@ -23,10 +23,11 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Index()
         {
-            Usuario usuario = new Usuario();            
-
+            Usuario usuario = new Usuario();           
             List<Usuario> listaUsuario = new List<Usuario>();
-            foreach (EntidadeDominio x in facade.Consultar(usuario)) listaUsuario.Add((Usuario)x);
+
+            foreach (EntidadeDominio x in facade.Consultar(usuario))
+                listaUsuario.Add((Usuario)x);
             
             return View(listaUsuario);
         }
@@ -42,18 +43,21 @@ namespace CadastroProduto.Controllers
         {          
             string conf = facade.Cadastrar(usuario);
             
-            if (conf != null) return RedirectToAction(nameof(Error), new { message = conf});
+            if (conf != null) 
+                return RedirectToAction(nameof(Error), new { message = conf});
             
             return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null) 
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             
             Usuario usuario = (Usuario)facade.ConsultarId(new Usuario() { Id = id.Value });
 
-            if (usuario == null) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            if (usuario == null) 
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             
             return View(usuario);
         }
@@ -69,22 +73,26 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Details(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null) 
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
                         
             Usuario usuario = (Usuario)facade.ConsultarId(new Usuario() { Id = id.Value });
 
-            if (usuario == null) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            if (usuario == null) 
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             
             return View(usuario);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null) 
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             
             Usuario usuario = (Usuario)facade.ConsultarId(new Usuario() { Id = id.Value });
 
-            if (usuario == null) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            if (usuario == null) 
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             
             return View(usuario);
         }
@@ -93,7 +101,8 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Usuario usuario)
         {
-            if(id != usuario.Id) return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
+            if(id != usuario.Id) 
+                return RedirectToAction(nameof(Error), new { message = "Esse usuário não existe" });
             
             try
             {

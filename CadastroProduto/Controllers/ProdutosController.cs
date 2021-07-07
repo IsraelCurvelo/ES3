@@ -22,8 +22,7 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Index()
         {            
-            Produto produto = new Produto();          
-
+            Produto produto = new Produto();  
             List<Produto> listaProduto = new List<Produto>();
 
             foreach (EntidadeDominio item in facade.Consultar(produto)) 
@@ -100,7 +99,6 @@ namespace CadastroProduto.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Produto produto)
         {
-
             if (id != produto.Id) 
                 return RedirectToAction(nameof(Error), new { message = "Produto escolhido pra editar não existe" });
             

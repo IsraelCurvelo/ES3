@@ -22,10 +22,11 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Index()
         {
-            Linha linha = new Linha();            
-
+            Linha linha = new Linha();         
             List<Linha> listaLinha = new List<Linha>();
-            foreach (EntidadeDominio x in facade.Consultar(linha)) listaLinha.Add((Linha)x);
+
+            foreach (EntidadeDominio x in facade.Consultar(linha)) 
+                listaLinha.Add((Linha)x);
             
             return View(listaLinha);
         }
@@ -45,10 +46,13 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null) 
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
                         
             Linha linha = (Linha)facade.ConsultarId(new Linha() { Id = id.Value });
-            if (linha == null) return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
+
+            if (linha == null) 
+                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             
             return View(linha);
         }
@@ -64,20 +68,26 @@ namespace CadastroProduto.Controllers
 
         public IActionResult Details(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null) 
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
                         
             Linha linha = (Linha)facade.ConsultarId(new Linha() { Id = id.Value });
-            if (linha == null) return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
+
+            if (linha == null) 
+                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             
             return View(linha);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null) return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
+            if (id == null)
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 
             Linha linha = (Linha)facade.ConsultarId(new Linha() { Id = id.Value });
-            if (linha == null) return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
+
+            if (linha == null) 
+                return RedirectToAction(nameof(Error), new { message = "Linha não encontrada" });
             
             return View(linha);
         }
@@ -87,7 +97,8 @@ namespace CadastroProduto.Controllers
         public IActionResult Edit(int id, Linha linha)
         {
 
-            if (id != linha.Id) return RedirectToAction(nameof(Error), new { message = "Linha escolhida para editar diferente da cadastrada" });
+            if (id != linha.Id) 
+                return RedirectToAction(nameof(Error), new { message = "Linha escolhida para editar diferente da cadastrada" });
             
             try
             {               
